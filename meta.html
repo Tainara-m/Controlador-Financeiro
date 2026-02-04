@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Metas • Controlador Financeiro</title>
+
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/themes.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <strong>Controlador Financeiro</strong>
+    <span class="chip">Logado: <span data-user-email>...</span></span>
+  </div>
+  <nav class="top-actions">
+    <a class="btn ghost" href="index.html">Home</a>
+    <button class="btn ghost" id="logoutBtn">Sair</button>
+  </nav>
+</header>
+
+<div class="shell">
+  <main class="content">
+    <section class="card">
+
+      <div class="row-between">
+        <div>
+          <h1>Metas</h1>
+          <p class="muted">Crie metas com imagem e gerencie tudo por aqui.</p>
+        </div>
+        <span class="chip" id="saveStatus" data-type="ok">OK</span>
+      </div>
+
+      <!-- Criar meta -->
+      <div class="panel mt">
+        <h2>Nova meta</h2>
+        <form id="goalForm" class="goal-form" novalidate>
+          <label class="field">
+            <span>Nome da meta</span>
+            <input id="goalName" type="text" placeholder="Ex.: Reserva de emergência" required />
+          </label>
+
+          <label class="field">
+            <span>Imagem (opcional)</span>
+            <input id="goalImage" type="file" accept="image/*" />
+          </label>
+
+          <button class="btn primary" id="goalSubmit" type="submit">Adicionar meta</button>
+        </form>
+      </div>
+
+      <!-- Lista -->
+      <div class="panel mt">
+        <div class="row-between">
+          <h2>Minhas metas</h2>
+          <input id="goalSearch" class="input-lite" placeholder="Buscar meta..." />
+        </div>
+
+        <div id="goalsList" class="goals-grid mt"></div>
+      </div>
+
+      <!-- Modal simples de edição -->
+      <dialog id="goalEditDialog" class="dialog">
+        <form method="dialog" class="dialog-card">
+          <div class="row-between">
+            <h3>Editar meta</h3>
+            <button class="btn ghost" value="cancel" type="submit">Fechar</button>
+          </div>
+
+          <input type="hidden" id="editGoalId" />
+
+          <label class="field mt">
+            <span>Novo nome</span>
+            <input id="editGoalName" type="text" />
+          </label>
+
+          <label class="field mt">
+            <span>Trocar imagem (opcional)</span>
+            <input id="editGoalImage" type="file" accept="image/*" />
+          </label>
+
+          <div class="row mt" style="gap:10px;">
+            <button class="btn primary" id="editSaveBtn" value="ok" type="submit">Salvar alterações</button>
+            <button class="btn danger" id="editDeleteBtn" value="danger" type="button">Excluir meta</button>
+          </div>
+        </form>
+      </dialog>
+
+    </section>
+  </main>
+</div>
+
+<footer class="bottom-nav" id="bottomNav">
+  <a href="index.html" class="bn-item" aria-label="Home">
+    <span class="bn-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 3 10v11h6v-7h6v7h6V10z"/></svg></span>
+    <small>Home</small>
+  </a>
+
+  <a href="anual.html" class="bn-item" aria-label="Comparativo anual">
+    <span class="bn-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19h16v2H2V3h2zM7 17h2V9H7zm4 0h2V5h-2zm4 0h2v-7h-2z"/></svg></span>
+    <small>Anual</small>
+  </a>
+
+  <a href="meta.html" class="bn-item is-active" aria-label="Metas">
+    <span class="bn-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8zm0-14a6 6 0 1 0 6 6 6 6 0 0 0-6-6zm0 10a4 4 0 1 1 4-4 4 4 0 0 1-4 4zm0-6a2 2 0 1 0 2 2 2 2 0 0 0-2-2z"/></svg></span>
+    <small>Metas</small>
+    <span class="bn-active-pill" aria-hidden="true"></span>
+  </a>
+
+  <a href="investimentos.html" class="bn-item" aria-label="Investimentos">
+    <span class="bn-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 7H5a2 2 0 0 0-2 2v10h18a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zm0 10H5V9h16zm-3-4h-3v2h3zM19 5H6V3h13z"/></svg></span>
+    <small>Invest.</small>
+  </a>
+
+  <a href="ir.html" class="bn-item" aria-label="Resumo de IR">
+    <span class="bn-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 2h12v20l-2-1-2 1-2-1-2 1-2-1-2 1zm3 5h6v2H9zm0 4h6v2H9zm0 4h6v2H9z"/></svg></span>
+    <small>IR</small>
+  </a>
+</footer>
+
+<script type="module">
+  import { bootstrapProtectedPage } from "./js/app.js";
+  import { initMetaPage } from "./js/meta.js";
+  import { signOut } from "./js/auth.js";
+
+  await bootstrapProtectedPage();
+  await initMetaPage();
+
+  document.querySelector("#logoutBtn")?.addEventListener("click", async () => {
+    await signOut();
+    window.location.href = "login.html";
+  });
+</script>
+</body>
+</html>

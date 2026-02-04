@@ -1,0 +1,51 @@
+/* Tema padrão (fallback) */
+:root {
+  --bg:#f5f6fa;
+  --panel:#ffffff;
+  --card:#ffffff;
+  --text:#0f172a;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+  --brand:#6b5cff;
+  --ring: 0 0 0 3px rgba(107,92,255,.35);
+}
+
+/* Classic */
+html[data-theme="classic"] {
+  --bg:#f5f6fa;
+  --panel:#ffffff;
+  --card:#ffffff;
+  --text:#0f172a;
+}
+
+/* Dark */
+html[data-theme="dark"] {
+  --bg:#0f1020;
+  --panel:#151735;
+  --card:#1b1f4a;
+  --text:#e8e9f3;
+}
+
+/* Ocean */
+html[data-theme="ocean"] {
+  --bg:#0e3a5d;
+  --panel:#0f4c75;
+  --card:#145374;
+  --text:#e0f2fe;
+}
+
+/* Sunset */
+html[data-theme="sunset"] {
+  --bg:#2a0f14;
+  --panel:#5a1a2c;
+  --card:#7a2335;
+  --text:#fff1f2;
+}
+
+/* Mint */
+html[data-theme="mint"] {
+  --bg:#e6fffa;
+  --panel:#b2f5ea;
+  --card:#99f6e4;
+  --text:#064e3b;
+}

@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Entrar • Controle Financeiro</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/themes.css" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+<link rel="manifest" href="assets/site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?
+family=Montserrat:wght@400;500;600;700&
+family=Open+Sans:wght@400;500;600&
+display=swap" rel="stylesheet">
+
+</head>
+<body class="auth-page">
+  <main class="auth-card">
+    <header class="auth-header">
+      <h1>Controlador Financeiro - Saldo Smart</h1>
+      <img src="/assets/arte.png" alt="Imagem com uma representação do Saldo Smart">
+      <p class="muted">Acesse seus dados ou crie uma conta.</p>
+    </header>
+
+    <form id="authForm" class="form">
+      <label class="field">
+        <span>Email</span>
+        <input id="email" type="email" autocomplete="email" required placeholder="seu@email.com" />
+      </label>
+
+      <label class="field">
+        <span>Senha</span>
+        <input id="password" type="password" autocomplete="current-password" required placeholder="••••••••" minlength="8" />
+      </label>
+
+      <label class="field" id="confirmWrap" style="display:none;">
+        <span>Confirmar senha</span>
+        <input id="confirm" type="password" autocomplete="new-password" placeholder="••••••••" minlength="6" />
+      </label>
+
+      <button class="btn primary" id="submitBtn" type="submit">Entrar</button>
+
+      <p class="helper muted" id="helperText">
+        Dica: senha precisa ter pelo menos 8 caracteres.
+      </p>
+
+    <div class="segmented">
+      <button class="seg-btn" data-mode="signup">Cadastrar</button>
+    </div>
+    
+      <div class="alert" id="alert" style="display:none;"></div>
+    </form>
+  </main>
+
+  <script type="module">
+    import { redirectIfAuthed, signIn, signUp } from "./js/auth.js";
+
+    const $ = (s) => document.querySelector(s);
+
+    const modeBtns = document.querySelectorAll("[data-mode]");
+    const confirmWrap = $("#confirmWrap");
+    const submitBtn = $("#submitBtn");
+    const alertBox = $("#alert");
+
+    let mode = "login";
+
+    function setMode(next) {
+      mode = next;
+      modeBtns.forEach(b => b.classList.toggle("is-active", b.dataset.mode === next));
+      confirmWrap.style.display = (next === "signup") ? "block" : "none";
+      submitBtn.textContent = (next === "signup") ? "Cadastrar" : "Entrar";
+      alertBox.style.display = "none";
+    }
+
+    function showAlert(msg) {
+      alertBox.textContent = msg;
+      alertBox.style.display = "block";
+    }
+
+    modeBtns.forEach(btn => btn.addEventListener("click", () => setMode(btn.dataset.mode)));
+
+    await redirectIfAuthed();
+
+    $("#authForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      alertBox.style.display = "none";
+
+      const email = $("#email").value.trim();
+      const password = $("#password").value;
+      const confirm = $("#confirm").value;
+
+      try {
+        submitBtn.disabled = true;
+
+        if (mode === "signup") {
+          if (password !== confirm) {
+            showAlert("As senhas não coincidem.");
+            return;
+          }
+          await signUp(email, password);
+          // Em alguns setups o Supabase pode exigir confirmação de email.
+          // Se você desativou, já entra. Se ativou, o usuário precisa confirmar.
+          showAlert("Conta criada! Se houver confirmação de email habilitada, verifique sua caixa de entrada.");
+        }
+
+        // tenta login (serve tanto para login quanto para após cadastro)
+        await signIn(email, password);
+        window.location.href = "index.html";
+
+      } catch (err) {
+        showAlert(err?.message || "Erro ao autenticar.");
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

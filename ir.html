@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Resumo de IR • Controle Financeiro</title>
+
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/themes.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <strong>Controle Financeiro</strong>
+      <span class="chip">Logado: <span data-user-email>...</span></span>
+    </div>
+    <nav class="top-actions">
+      <a class="btn ghost" href="index.html">Home</a>
+      <button class="btn ghost" id="logoutBtn" type="button">Sair</button>
+    </nav>
+  </header>
+
+  <div class="shell">
+    <main class="content">
+      <section class="card">
+        <div class="row-between">
+          <div>
+            <h1>Resumo de IR</h1>
+            <p class="muted">
+              Lance aqui apenas os pagamentos dedutíveis com os dados necessários para a declaração.
+            </p>
+          </div>
+
+          <div style="min-width:200px">
+            <label class="field">
+              <span>Ano</span>
+              <select id="irYear"></select>
+            </label>
+          </div>
+        </div>
+
+        <div class="kpi-grid mt">
+          <div class="kpi">
+            <div class="muted">Total dedutível no ano</div>
+            <div class="kpi-value" id="kpiTotal">—</div>
+          </div>
+          <div class="kpi">
+            <div class="muted">Quantidade de lançamentos</div>
+            <div class="kpi-value" id="kpiCount">—</div>
+          </div>
+          <div class="kpi">
+            <div class="muted">Exportar</div>
+            <button class="btn" id="exportCsvBtn" type="button">Baixar CSV</button>
+          </div>
+        </div>
+
+        <div class="panel mt">
+          <h2>Adicionar pagamento dedutível</h2>
+
+          <form id="irForm" class="ir-form">
+            <label class="field">
+              <span>Tipo de dedução</span>
+              <select id="deductionType" required>
+                <option value="">Selecione</option>
+                <option value="Saúde">Saúde</option>
+                <option value="Educação">Educação</option>
+                <option value="Previdência">Previdência</option>
+                <option value="Pensão alimentícia">Pensão alimentícia</option>
+                <option value="Outros">Outros</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Descrição</span>
+              <input id="description" type="text" required placeholder="Ex.: Plano de saúde, mensalidade, consulta..." />
+            </label>
+
+            <label class="field">
+              <span>Beneficiário (titular/dependente)</span>
+              <input id="beneficiary" type="text" placeholder="Ex.: Seu nome / nome do dependente" />
+            </label>
+
+            <label class="field">
+              <span>CPF/CNPJ (prestador/instituição)</span>
+              <input id="document" type="text" inputmode="numeric" placeholder="Somente números ou com pontuação" />
+            </label>
+
+            <label class="field">
+              <span>Valor (R$)</span>
+              <input id="amount" type="number" min="0.01" step="0.01" required placeholder="0,00" />
+            </label>
+
+            <button class="btn primary" id="saveBtn" type="submit">Salvar</button>
+            <button class="btn ghost" id="cancelEditBtn" type="button" style="display:none;">Cancelar edição</button>
+          </form>
+
+          <div class="chip mt" id="saveStatus" data-type="ok">Salvo</div>
+        </div>
+
+        <div class="panel mt">
+          <div class="row-between">
+            <h2>Pagamentos lançados</h2>
+            <input id="filterText" class="input-lite" type="text" placeholder="Filtrar por descrição / CPF-CNPJ / beneficiário..." />
+          </div>
+
+          <div id="irList" class="ir-list"></div>
+        </div>
+
+        <div class="panel mt">
+          <h2>Observações</h2>
+          <ul class="list">
+            <li>Este resumo é um organizador. A declaração final é feita no programa/app da Receita.</li>
+            <li>Você pode lançar somente o que é dedutível e guardar aqui para consulta/relatórios.</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="bottom-nav" id="bottomNav">
+  <a href="index.html" class="bn-item" aria-label="Home">
+    <span class="bn-ico" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M12 3 3 10v11h6v-7h6v7h6V10z"/></svg>
+    </span>
+    <small>Home</small>
+  </a>
+
+  <a href="anual.html" class="bn-item is-active" aria-label="Comparativo anual">
+    <span class="bn-ico" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M4 19h16v2H2V3h2zM7 17h2V9H7zm4 0h2V5h-2zm4 0h2v-7h-2z"/></svg>
+    </span>
+    <small>Anual</small>
+    <span class="bn-active-pill" aria-hidden="true"></span>
+  </a>
+
+  <a href="mes.html" class="bn-item" aria-label="Mês">
+    <span class="bn-ico" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M7 2h2v2h6V2h2v2h3v18H4V4h3zm13 6H6v12h14z"/></svg>
+    </span>
+    <small>Mês</small>
+  </a>
+
+  <a href="meta.html" class="bn-item" aria-label="Metas">
+    <span class="bn-ico" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8zm0-14a6 6 0 1 0 6 6 6 6 0 0 0-6-6zm0 10a4 4 0 1 1 4-4 4 4 0 0 1-4 4zm0-6a2 2 0 1 0 2 2 2 2 0 0 0-2-2z"/></svg>
+    </span>
+    <small>Metas</small>
+  </a>
+
+  <a href="investimentos.html" class="bn-item" aria-label="Investimentos">
+    <span class="bn-ico" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M21 7H5a2 2 0 0 0-2 2v10h18a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zm0 10H5V9h16zm-3-4h-3v2h3zM19 5H6V3h13z"/></svg>
+    </span>
+    <small>Invest.</small>
+  </a>
+
+  <a href="ir.html" class="bn-item" aria-label="Resumo de IR">
+    <span class="bn-ico" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M6 2h12v20l-2-1-2 1-2-1-2 1-2-1-2 1zm3 5h6v2H9zm0 4h6v2H9zm0 4h6v2H9z"/></svg>
+    </span>
+    <small>IR</small>
+  </a>
+</footer>
+
+  <script type="module">
+    import { bootstrapProtectedPage } from "./js/app.js";
+    import { signOut } from "./js/auth.js";
+    import { initIRPage } from "./js/ir.js";
+
+    await bootstrapProtectedPage();
+    await initIRPage();
+
+    document.querySelector("#logoutBtn")?.addEventListener("click", async () => {
+      await signOut();
+      window.location.href = "login.html";
+    });
+  </script>
+</body>
+</html>

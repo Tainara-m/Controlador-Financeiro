@@ -1,0 +1,23 @@
+.topbar{
+  position:sticky; top:0; z-index:10;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 18px;
+  border-bottom:1px solid var(--border);
+  background: var(--panel);
+}
+.brand{display:flex; gap:10px; align-items:center}
+.shell{
+  display:grid;
+  grid-template-columns: 260px 1fr;
+  min-height: calc(100vh - 58px);
+}
+.sidebar{
+  padding:14px;
+  border-right:1px solid var(--border);
+  background: var(--panel);
+}
+.content{padding:18px; max-width:1100px}
+@media (max-width: 900px){
+  .shell{grid-template-columns: 1fr}
+  .sidebar{position:static; border-right:none; border-bottom:1px solid var(--border)}
+}

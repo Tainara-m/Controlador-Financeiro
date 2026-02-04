@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Investimentos • Controlador Financeiro</title>
+
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/themes.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <strong>Controlador Financeiro</strong>
+    <span class="chip">Logado: <span data-user-email>...</span></span>
+  </div>
+  <nav class="top-actions">
+    <a class="btn ghost" href="index.html">Home</a>
+    <button class="btn ghost" id="logoutBtn">Sair</button>
+  </nav>
+</header>
+
+<div class="shell">
+  <main class="content">
+    <section class="card">
+
+      <div class="row-between">
+        <div>
+          <h1>Investimentos</h1>
+          <p class="muted">Registre seus aportes e acompanhe o total investido no ano.</p>
+        </div>
+        <span class="chip" id="saveStatus" data-type="ok">OK</span>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-grid mt">
+        <div class="kpi">
+          <div class="muted">Saldo do mês (base)</div>
+          <div class="kpi-value" id="kpiMonthBalance">—</div>
+        </div>
+        <div class="kpi kpi-strong">
+          <div class="muted">Total investido (ano)</div>
+          <div class="kpi-value" id="kpiYearInvested">—</div>
+        </div>
+      </div>
+
+      <div class="grid-2 mt">
+        <!-- Form -->
+        <div class="panel">
+          <div class="row-between">
+            <h2>Novo aporte</h2>
+            <button class="btn ghost" id="importBalanceBtn" type="button">Importar saldo do mês</button>
+          </div>
+
+          <form id="invForm" class="tx-form" novalidate>
+            <label class="field">
+              <span>Data</span>
+              <input id="invDate" type="date" required />
+            </label>
+
+            <label class="field">
+              <span>Destino</span>
+              <select id="invCategory" required>
+                <option value="Renda fixa">Renda fixa</option>
+                <option value="FII">FII</option>
+                <option value="Ações">Ações</option>
+                <option value="ETF">ETF</option>
+                <option value="Cripto">Cripto</option>
+                <option value="Outros">Outros</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Local da aplicação (opcional)</span>
+              <input id="invPlace" type="text" placeholder="Ex.: Inter, Nuinvest, XP..." />
+            </label>
+
+            <label class="field">
+              <span>Valor</span>
+              <input id="invAmount" type="number" step="0.01" min="0" required />
+              <small class="muted" id="invHint">Dica: você pode importar o saldo do mês e ajustar.</small>
+            </label>
+
+            <button class="btn primary" type="submit">Salvar aporte</button>
+          </form>
+        </div>
+
+        <!-- Pie -->
+        <div class="panel">
+          <h2>Resumo do ano</h2>
+          <p class="muted small">Distribuição do total investido por categoria.</p>
+
+          <div class="chart-box" style="height:320px;">
+            <canvas id="pieInv"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lista -->
+      <div class="panel mt">
+        <div class="row-between">
+          <h2>Lançamentos</h2>
+          <div class="table-actions">
+            <input id="invSearch" class="input-lite" placeholder="Buscar..." />
+            <select id="invFilterCat" class="input-lite">
+              <option value="">Todas</option>
+              <option value="Renda fixa">Renda fixa</option>
+              <option value="FII">FII</option>
+              <option value="Ações">Ações</option>
+              <option value="ETF">ETF</option>
+              <option value="Cripto">Cripto</option>
+              <option value="Outros">Outros</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="invTable" class="table-lite mt"></div>
+      </div>
+
+    </section>
+  </main>
+</div>
+
+<footer class="bottom-nav" id="bottomNav">
+  <a href="index.html" class="bn-item" aria-label="Home">
+    <span class="bn-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 3 10v11h6v-7h6v7h6V10z"/></svg></span>
+    <small>Home</small>
+  </a>
+
+  <a href="anual.html" class="bn-item" aria-label="Comparativo anual">
+    <span class="bn-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19h16v2H2V3h2zM7 17h2V9H7zm4 0h2V5h-2zm4 0h2v-7h-2z"/></svg></span>
+    <small>Anual</small>
+  </a>
+
+  <a href="meta.html" class="bn-item" aria-label="Metas">
+    <span class="bn-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8zm0-14a6 6 0 1 0 6 6 6 6 0 0 0-6-6zm0 10a4 4 0 1 1 4-4 4 4 0 0 1-4 4zm0-6a2 2 0 1 0 2 2 2 2 0 0 0-2-2z"/></svg></span>
+    <small>Metas</small>
+  </a>
+
+  <a href="investimentos.html" class="bn-item is-active" aria-label="Investimentos">
+    <span class="bn-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 7H5a2 2 0 0 0-2 2v10h18a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zm0 10H5V9h16zm-3-4h-3v2h3zM19 5H6V3h13z"/></svg></span>
+    <small>Invest.</small>
+    <span class="bn-active-pill" aria-hidden="true"></span>
+  </a>
+
+  <a href="ir.html" class="bn-item" aria-label="Resumo de IR">
+    <span class="bn-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 2h12v20l-2-1-2 1-2-1-2 1-2-1-2 1zm3 5h6v2H9zm0 4h6v2H9zm0 4h6v2H9z"/></svg></span>
+    <small>IR</small>
+  </a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script type="module">
+  import { bootstrapProtectedPage } from "./js/app.js";
+  import { initInvestimentosPage } from "./js/investimentos.js";
+  import { signOut } from "./js/auth.js";
+
+  await bootstrapProtectedPage();
+  await initInvestimentosPage();
+
+  document.querySelector("#logoutBtn")?.addEventListener("click", async () => {
+    await signOut();
+    window.location.href = "login.html";
+  });
+</script>
+</body>
+</html>
