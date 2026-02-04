@@ -67,11 +67,11 @@ function calcYearKPIsFromBuckets(buckets) {
    (use a mesma pasta do mes.html)
 =========================== */
 const KITTIES = {
-  desesperado: { src: "assets/cats/desesperado.png", title: "Desesperado" },
-  chorando:    { src: "assets/cats/chorando.png",    title: "Chorando" },
-  triste:      { src: "assets/cats/triste.png",      title: "Triste" },
-  normal:      { src: "assets/cats/normal.png",      title: "Ok" },
-  feliz:       { src: "assets/cats/feliz.png",       title: "Feliz" }
+  desesperado: { src: "./assets/cats/desesperado.png", title: "Desesperado" },
+  chorando:    { src: "./assets/cats/chorando.png",    title: "Chorando" },
+  triste:      { src: "./assets/cats/triste.png",      title: "Triste" },
+  normal:      { src: "./assets/cats/normal.png",      title: "Ok" },
+  feliz:       { src: "./assets/cats/feliz.png",       title: "Feliz" }
 };
 
 function pickKittyByRate(ratePct) {
