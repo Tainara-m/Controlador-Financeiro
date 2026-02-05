@@ -1,51 +1,165 @@
-/* Tema padrão (fallback) */
-:root {
-  --bg:#f5f6fa;
-  --panel:#ffffff;
-  --card:#ffffff;
-  --text:#0f172a;
-  --muted:#6b7280;
-  --border:#e5e7eb;
-  --brand:#6b5cff;
-  --ring: 0 0 0 3px rgba(107,92,255,.35);
+/* themes.css — 5 temas + paleta refinada + variáveis para “vidro”
+   O JS pode setar: document.documentElement.dataset.theme =
+   aurora | oceano | floresta | pordosol | grafite
+   (aliases mantidos para compatibilidade.)
+*/
+
+:root{
+  /* Fontes */
+  --font-title: "Montserrat", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  --font-body: "Open Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+  /* Escala */
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+
+  /* Sombras */
+  --shadow: 0 18px 55px rgba(0,0,0,.30);
+  --shadow-soft: 0 10px 30px rgba(0,0,0,.20);
+
+  /* Vidro (Glassmorphism) */
+  --glass-blur: 16px;
+  --glass-sat: 140%;
+  --glass-border: rgba(255,255,255,.14);
+  --glass-topbar-bg: rgba(10,14,24,.52);
+  --glass-nav-bg: rgba(10,14,24,.62);
+  --glass-card-bg: rgba(255,255,255,.08);
+  --glass-panel-bg: rgba(255,255,255,.06);
+
+  /* Estados */
+  --focus: 0 0 0 4px rgba(124,92,255,.25);
+
+  /* Base (padrão = Aurora) */
+  --bg: #0b1020;
+  --bg-spot-1: rgba(132,94,247,.30);
+  --bg-spot-2: rgba(74,215,255,.18);
+  --bg-spot-3: rgba(46,229,157,.10);
+
+  --text: rgba(255,255,255,.92);
+  --muted: rgba(255,255,255,.68);
+  --placeholder: rgba(255,255,255,.55);
+
+  --primary-rgb: 124,92,255;
+  --accent-rgb: 74,215,255;
+  --ok-rgb: 46,229,157;
+  --danger-rgb: 255,77,109;
 }
 
-/* Classic */
-html[data-theme="classic"] {
-  --bg:#f5f6fa;
-  --panel:#ffffff;
-  --card:#ffffff;
-  --text:#0f172a;
+/* ===== Tema 1 — AURORA (padrão) ===== */
+:root,
+[data-theme="aurora"],
+[data-theme="roxo"],
+[data-theme="purple"],
+[data-theme="violet"]{
+  --bg: #0b1020;
+  --bg-spot-1: rgba(132,94,247,.32);
+  --bg-spot-2: rgba(88,207,255,.20);
+  --bg-spot-3: rgba(250,204,21,.06);
+
+  --primary-rgb: 124,92,255;
+  --accent-rgb: 74,215,255;
+  --focus: 0 0 0 4px rgba(124,92,255,.25);
 }
 
-/* Dark */
-html[data-theme="dark"] {
-  --bg:#0f1020;
-  --panel:#151735;
-  --card:#1b1f4a;
-  --text:#e8e9f3;
+/* ===== Tema 2 — OCEANO ===== */
+[data-theme="oceano"],
+[data-theme="ocean"],
+[data-theme="azul"],
+[data-theme="blue"]{
+  --bg: #061826;
+  --bg-spot-1: rgba(56,189,248,.24);
+  --bg-spot-2: rgba(99,102,241,.18);
+  --bg-spot-3: rgba(14,165,233,.10);
+
+  --primary-rgb: 56,189,248;
+  --accent-rgb: 99,102,241;
+  --focus: 0 0 0 4px rgba(56,189,248,.22);
 }
 
-/* Ocean */
-html[data-theme="ocean"] {
-  --bg:#0e3a5d;
-  --panel:#0f4c75;
-  --card:#145374;
-  --text:#e0f2fe;
+/* ===== Tema 3 — FLORESTA ===== */
+[data-theme="floresta"],
+[data-theme="forest"],
+[data-theme="verde"],
+[data-theme="green"]{
+  --bg: #061a13;
+  --bg-spot-1: rgba(34,197,94,.22);
+  --bg-spot-2: rgba(16,185,129,.16);
+  --bg-spot-3: rgba(163,230,53,.08);
+
+  --primary-rgb: 34,197,94;
+  --accent-rgb: 16,185,129;
+  --focus: 0 0 0 4px rgba(34,197,94,.20);
 }
 
-/* Sunset */
-html[data-theme="sunset"] {
-  --bg:#2a0f14;
-  --panel:#5a1a2c;
-  --card:#7a2335;
-  --text:#fff1f2;
+/* ===== Tema 4 — PÔR DO SOL ===== */
+[data-theme="pordosol"],
+[data-theme="por-do-sol"],
+[data-theme="sunset"],
+[data-theme="laranja"],
+[data-theme="orange"]{
+  --bg: #1b0d12;
+  --bg-spot-1: rgba(251,146,60,.20);
+  --bg-spot-2: rgba(244,63,94,.18);
+  --bg-spot-3: rgba(250,204,21,.08);
+
+  --primary-rgb: 251,146,60;
+  --accent-rgb: 244,63,94;
+  --focus: 0 0 0 4px rgba(251,146,60,.20);
 }
 
-/* Mint */
-html[data-theme="mint"] {
-  --bg:#e6fffa;
-  --panel:#b2f5ea;
-  --card:#99f6e4;
-  --text:#064e3b;
+/* ===== Tema 5 — GRAFITE ===== */
+[data-theme="grafite"],
+[data-theme="graphite"],
+[data-theme="slate"],
+[data-theme="cinza"],
+[data-theme="mono"]{
+  --bg: #0b0f14;
+  --bg-spot-1: rgba(148,163,184,.14);
+  --bg-spot-2: rgba(226,232,240,.08);
+  --bg-spot-3: rgba(94,234,212,.06);
+
+  --glass-card-bg: rgba(255,255,255,.06);
+  --glass-panel-bg: rgba(255,255,255,.05);
+  --glass-border: rgba(255,255,255,.11);
+
+  --primary-rgb: 226,232,240;
+  --accent-rgb: 148,163,184;
+  --focus: 0 0 0 4px rgba(148,163,184,.18);
+}
+
+/* === Modo claro (se o usuário preferir) === */
+@media (prefers-color-scheme: light){
+  :root{
+    --bg: #f7f8fb;
+    --bg-spot-1: rgba(124,92,255,.12);
+    --bg-spot-2: rgba(74,215,255,.10);
+    --bg-spot-3: rgba(46,229,157,.08);
+
+    --text: rgba(15,23,42,.92);
+    --muted: rgba(15,23,42,.62);
+    --placeholder: rgba(15,23,42,.45);
+
+    --shadow: 0 18px 55px rgba(15,23,42,.12);
+    --shadow-soft: 0 10px 30px rgba(15,23,42,.10);
+
+    --glass-border: rgba(15,23,42,.12);
+    --glass-topbar-bg: rgba(255,255,255,.72);
+    --glass-nav-bg: rgba(255,255,255,.78);
+    --glass-card-bg: rgba(255,255,255,.76);
+    --glass-panel-bg: rgba(255,255,255,.70);
+
+    --focus: 0 0 0 4px rgba(124,92,255,.18);
+  }
+}
+
+/* Fundo global (mais rico) */
+body{
+  background:
+    radial-gradient(900px 520px at 12% 12%, var(--bg-spot-1), transparent 56%),
+    radial-gradient(800px 520px at 88% 18%, var(--bg-spot-2), transparent 60%),
+    radial-gradient(900px 600px at 48% 115%, var(--bg-spot-3), transparent 60%),
+    conic-gradient(from 205deg at 55% 35%, rgba(var(--accent-rgb), .10), transparent 25%, rgba(var(--primary-rgb), .10), transparent 65%),
+    linear-gradient(180deg, rgba(255,255,255,.04), transparent 40%),
+    var(--bg);
 }

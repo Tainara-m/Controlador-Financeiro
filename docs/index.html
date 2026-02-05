@@ -37,27 +37,26 @@
         <div class="row-between">
           <div>
             <h1>Comece aqui</h1>
-            <p class="muted">
+            <p class="muted m1">
               Configure seu ambiente: tema, métodos de pagamento, moeda, metas e categorias.
             </p>
           </div>
           <span class="chip" id="saveStatus" data-type="ok">Salvo</span>
         </div>
 
-        <div class="grid-2">
+        <div class="home-grid">
           <div class="panel">
             <h2>Tema do site</h2>
-            <p class="muted">Escolha um tema (aplica na hora e salva na sua conta).</p>
+            <p class="muted m1">Escolha um tema (aplica na hora e salva na sua conta).</p>
 
-            <label class="field">
-              <span>Tema</span>
+            <label class="field"> 
               <select id="themeSelect"></select>
             </label>
           </div>
 
-          <div class="panel mt">
+          <div class="panel">
             <h2>Tipos de entrada</h2>
-            <p class="muted">Digite os tipos de entrada que você usa (ex.: Salário CLT, Freelance, Aluguel).</p>
+            <p class="muted m1">Digite os tipos de entrada que você usa (ex.: Salário CLT, Freelance, Aluguel).</p>
 
             <form id="incomeTypeForm" class="inline-form">
               <input id="incomeTypeInput" class="input-lite" type="text" placeholder="Ex.: Salário CLT" />
@@ -69,10 +68,9 @@
 
           <div class="panel">
             <h2>Moeda</h2>
-            <p class="muted">Define o formato padrão de valores do sistema.</p>
+            <p class="muted m1">Define o formato padrão de valores do sistema.</p>
 
             <label class="field">
-              <span>Moeda</span>
               <select id="currencySelect">
                 <option value="BRL">BRL — Real (R$)</option>
                 <option value="USD">USD — Dólar ($)</option>
@@ -86,13 +84,13 @@
         <div class="grid-2 mt">
           <div class="panel">
             <h2>Métodos de pagamento</h2>
-            <p class="muted">Marque os métodos que você usa.</p>
+            <p class="muted m1">Marque os métodos que você usa.</p>
             <div id="paymentMethods" class="checkgrid"></div>
           </div>
 
-          <div class="panel">
+          <div class="panel panel-goal">
             <h2>Categorias de gastos</h2>
-            <p class="muted">Marque as categorias que você quer usar no sistema.</p>
+            <p class="muted m1">Marque as categorias que você quer usar no sistema.</p>
             <div id="categories" class="checkgrid"></div>
           </div>
         </div>

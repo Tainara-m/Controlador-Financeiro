@@ -1,11 +1,11 @@
 import { supabase } from "./supabaseClient.js";
 
 export const THEMES = [
-  { id: "classic", label: "Clássico" },
-  { id: "dark", label: "Dark" },
+  { id: "aurora", label: "Aurora" },
+  { id: "forest", label: "Floresta" },
   { id: "ocean", label: "Ocean" },
   { id: "sunset", label: "Sunset" },
-  { id: "mint", label: "Mint" },
+  { id: "slate", label: "Gray" },
 ];
 
 export function applyTheme(themeId) {

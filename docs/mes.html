@@ -65,37 +65,42 @@
       <!-- Resumo -->
       <div class="month-summary">
 
-        <div class="kpi-grid">
-          <div class="kpi">
-            <div class="muted">Entradas</div>
-            <div class="kpi-value" id="kpiIn">—</div>
+        <!-- Linha 1: KPIs + Incentivo -->
+        <div class="month-top-row">
+          <div class="kpi-grid">
+            <div class="kpi">
+              <div class="muted">Entradas</div>
+              <div class="kpi-value" id="kpiIn">—</div>
+            </div>
+            <div class="kpi">
+              <div class="muted">Saídas</div>
+              <div class="kpi-value" id="kpiOut">—</div>
+            </div>
+            <div class="kpi kpi-strong">
+              <div class="muted">Saldo</div>
+              <div class="kpi-value" id="kpiBal">—</div>
+            </div>
           </div>
-          <div class="kpi">
-            <div class="muted">Saídas</div>
-            <div class="kpi-value" id="kpiOut">—</div>
-          </div>
-          <div class="kpi kpi-strong">
-            <div class="muted">Saldo</div>
-            <div class="kpi-value" id="kpiBal">—</div>
-          </div>
-        </div>
 
-        <div class="grid-2 mt">
-          <div class="panel">
+          <div class="panel month-incentive">
             <div class="row-between">
-              <h2>Incentivo do mês</h2>
+              <div></div>
               <span class="chip" id="kittyRateChip">—</span>
             </div>
 
             <div class="kitty">
-              <img id="kittyImg" alt="Gatinho de incentivo" />
+              <!-- Padrão (antes do JS carregar): gatinho normal -->
+              <img id="kittyImg" src="./assets/cats/normal.png" alt="Gatinho de incentivo" loading="lazy" />
               <div>
                 <div class="kitty-title" id="kittyTitle">—</div>
                 <div class="muted" id="kittyHint">—</div>
               </div>
             </div>
           </div>
+        </div>
 
+        <!-- Linha 2: Gráficos + Novo lançamento -->
+        <div class="grid-2 mt">
           <div class="panel">
             <div class="row-between">
               <div>
@@ -116,61 +121,61 @@
               </div>
             </div>
           </div>
+
+          <div class="panel">
+            <h2>Novo lançamento</h2>
+
+            <form id="txForm" class="tx-form" novalidate>
+              <div class="tx-grid">
+                <label class="field">
+                  <span>Data</span>
+                  <input id="txDate" type="date" />
+                </label>
+
+                <label class="field">
+                  <span>Tipo</span>
+                  <select id="txType">
+                    <option value="entrada">Entrada</option>
+                    <option value="saida">Saída</option>
+                  </select>
+                </label>
+
+                <label class="field">
+                  <span>Tipo de entrada</span>
+                  <select id="txIncomeType" disabled>
+                    <option value="">—</option>
+                  </select>
+                </label>
+
+                <label class="field">
+                  <span>Categoria</span>
+                  <select id="txCategory"></select>
+                </label>
+
+                <label class="field">
+                  <span>Método de pagamento</span>
+                  <select id="txPayment"></select>
+                </label>
+
+                <label class="field">
+                  <span>Descrição</span>
+                  <input id="txDesc" type="text" placeholder="Descrição opcional" />
+                </label>
+              </div>
+
+              <label class="field field-strong">
+                <span>Valor</span>
+                <input id="txAmount" type="number" step="0.01" min="0.01" placeholder="0,00" required />
+              </label>
+
+              <button class="btn primary w-full" type="submit">Adicionar lançamento</button>
+            </form>
+          </div>
         </div>
       </div>
 
       <!-- Ações -->
-      <div class="grid-2 mt">
-        <div class="panel">
-          <h2>Novo lançamento</h2>
-
-          <form id="txForm" class="tx-form" novalidate>
-            <div class="tx-grid">
-              <label class="field">
-                <span>Data</span>
-                <input id="txDate" type="date" />
-              </label>
-
-              <label class="field">
-                <span>Tipo</span>
-                <select id="txType">
-                  <option value="entrada">Entrada</option>
-                  <option value="saida">Saída</option>
-                </select>
-              </label>
-
-              <label class="field">
-                <span>Tipo de entrada</span>
-                <select id="txIncomeType" disabled>
-                  <option value="">—</option>
-                </select>
-              </label>
-
-              <label class="field">
-                <span>Categoria</span>
-                <select id="txCategory"></select>
-              </label>
-
-              <label class="field">
-                <span>Método de pagamento</span>
-                <select id="txPayment"></select>
-              </label>
-
-              <label class="field">
-                <span>Descrição</span>
-                <input id="txDesc" type="text" placeholder="Descrição opcional" />
-              </label>
-            </div>
-
-            <label class="field field-strong">
-              <span>Valor</span>
-              <input id="txAmount" type="number" step="0.01" min="0.01" placeholder="0,00" required />
-            </label>
-
-            <button class="btn primary w-full" type="submit">Adicionar lançamento</button>
-          </form>
-        </div>
-
+      <div class="mt">
         <div class="panel">
           <div class="row-between">
             <h2>Lançamentos</h2>
@@ -193,7 +198,36 @@
 </div>
 
 <footer class="bottom-nav" id="bottomNav">
-  <!-- ... seu footer igual ... -->
+  <a href="index.html" class="bn-item" aria-label="Home">
+    <span class="bn-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 3 10v11h6v-7h6v7h6V10z"/></svg></span>
+    <small>Home</small>
+  </a>
+
+  <a href="anual.html" class="bn-item" aria-label="Comparativo anual">
+    <span class="bn-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19h16v2H2V3h2zM7 17h2V9H7zm4 0h2V5h-2zm4 0h2v-7h-2z"/></svg></span>
+    <small>Anual</small>
+  </a>
+
+  <a href="mes.html" class="bn-item is-active" aria-label="Mês">
+    <span class="bn-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 2h2v2h6V2h2v2h3v18H4V4h3zm13 6H6v12h14z"/></svg></span>
+    <small>Mês</small>
+    <span class="bn-active-pill" aria-hidden="true"></span>
+  </a>
+
+  <a href="meta.html" class="bn-item" aria-label="Metas">
+    <span class="bn-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8zm0-14a6 6 0 1 0 6 6 6 6 0 0 0-6-6zm0 10a4 4 0 1 1 4-4 4 4 0 0 1-4 4zm0-6a2 2 0 1 0 2 2 2 2 0 0 0-2-2z"/></svg></span>
+    <small>Metas</small>
+  </a>
+
+  <a href="investimentos.html" class="bn-item" aria-label="Investimentos">
+    <span class="bn-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 7H5a2 2 0 0 0-2 2v10h18a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zm0 10H5V9h16zm-3-4h-3v2h3zM19 5H6V3h13z"/></svg></span>
+    <small>Invest.</small>
+  </a>
+
+  <a href="ir.html" class="bn-item" aria-label="Resumo de IR">
+    <span class="bn-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 2h12v20l-2-1-2 1-2-1-2 1-2-1-2 1zm3 5h6v2H9zm0 4h6v2H9zm0 4h6v2H9z"/></svg></span>
+    <small>IR</small>
+  </a>  
   <div class="bn-balance" aria-label="Saldo do mês">
     <div class="bn-balance-label">Saldo</div>
     <div class="bn-balance-value" id="footerBalance">—</div>

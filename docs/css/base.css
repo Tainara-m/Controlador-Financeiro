@@ -1,42 +1,106 @@
-*{
-  box-sizing:border-box;
+/* base.css — resets + tipografia + base visual (o fundo vem do themes.css) */
+
+*, *::before, *::after{ box-sizing: border-box; }
+
+html, body{ height: 100%; }
+
+body{
+  margin: 0;
+  font-family: var(--font-body, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif);
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--text);
+  background: var(--bg); /* themes.css substitui por gradiente */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-html,body{
-  height:100%;
+img{ max-width: 100%; display: block; }
+
+h1,h2,h3,strong{
+  font-family: var(--font-title, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif);
+  letter-spacing: -0.02em;
+}
+
+h1{ font-size: clamp(20px, 2vw, 26px); margin: 0; }
+h2{ font-size: 16px; margin: 0; }
+h3{ font-size: 14px; margin: 0; }
+
+p{ margin: 8px 0 0; }
+
+a{ color: inherit; text-decoration: none; }
+
+button, input, select, textarea{ font: inherit; }
+
+.muted{ color: var(--muted);}
+.m1{font-size: 12px;}
+.small{ font-size: 10px; }
+
+/* Acessibilidade */
+:focus-visible{
+  outline: none;
+  box-shadow: var(--focus);
+  border-radius: 12px;
+}
+
+::selection{ background: rgba(124,92,255,.35); }
+
+/* Overlays discretos para “acabamento premium” (não dependem de assets) */
+body::before{
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  /* grid leve + vinheta */
+  background:
+    radial-gradient(1000px 800px at 50% -20%, rgba(255,255,255,.10), transparent 60%),
+    linear-gradient(to bottom, rgba(0,0,0,.00), rgba(0,0,0,.18)),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 1px, transparent 1px 110px),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.04) 0 1px, transparent 1px 110px);
+  opacity: .18;
+  mix-blend-mode: overlay;
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ scroll-behavior: auto !important; transition: none !important; animation: none !important; }
+}
+
+html{
+  min-height: 100%;
+  background: var(--bg);
+}
+
+/* Fundo fluido (sempre contínuo) */
+html::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+
+  background:
+    radial-gradient(60vmax 45vmax at 12% 12%, var(--bg-spot-1), transparent 58%),
+    radial-gradient(55vmax 40vmax at 88% 18%, var(--bg-spot-2), transparent 62%),
+    radial-gradient(62vmax 46vmax at 50% 120%, var(--bg-spot-3), transparent 60%),
+    conic-gradient(from 210deg at 55% 35%, rgba(var(--accent-rgb), .10), transparent 25%, rgba(var(--primary-rgb), .10), transparent 65%),
+    linear-gradient(180deg, rgba(255,255,255,.04), transparent 45%),
+    var(--bg);
+
+  /* importante pra não “emendar” */
+  background-repeat: no-repeat;
+}
+
+/* body só fica transparente e rola por cima */
+body{
+  background: transparent;
 }
 
 body{
-  margin:0;
-  font-family: 'Open Sans', sans-serif;
-  background: var(--bg);
-  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-a{
-  color:inherit;
-  text-decoration:none;
-}
-
-.muted{
-  color:var(--muted);
-}
-
-h1,h2{
-  margin:0 0 .5rem 0;
-}
-
-ol{
-  margin:.5rem 0 0 1.2rem;
-}
-
-.panel, .card{
-  background: var(--card);
-}
-
-h1, h2, h3,
-.card-title,
-.card-value,
-button {
-  font-family: 'Montserrat', sans-serif;
+.shell{
+  flex: 1; /* empurra o footer para o final */
 }
