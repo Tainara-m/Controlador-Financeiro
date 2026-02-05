@@ -4,22 +4,22 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Comece aqui • Controlador Financeiro</title>
+
   <link rel="stylesheet" href="./css/base.css" />
   <link rel="stylesheet" href="./css/layout.css" />
   <link rel="stylesheet" href="./css/components.css" />
   <link rel="stylesheet" href="./css/themes.css" />
-    <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png">
-<link rel="manifest" href="./assets/site.webmanifest">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?
-family=Montserrat:wght@400;500;600;700&
-family=Open+Sans:wght@400;500;600&
-display=swap" rel="stylesheet">
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png">
+  <link rel="manifest" href="./assets/site.webmanifest">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
   <header class="topbar">
     <div class="brand">
@@ -32,150 +32,138 @@ display=swap" rel="stylesheet">
   </header>
 
   <div class="shell">
-    <!-- <aside class="sidebar">
-      <a class="navlink is-active" href="index.html">Comece aqui</a>
-      <a class="navlink" href="anual.html">Comparativo anual</a>
-      <a class="navlink" href="meta.html">Metas</a>
-      <a class="navlink" href="investimentos.html">Investimentos</a>
-    </aside> -->
-
     <main class="content">
-  <section class="card">
-    <div class="row-between">
-      <div>
-        <h1>Comece aqui</h1>
-        <p class="muted">
-          Configure seu ambiente: tema, métodos de pagamento, moeda, metas e categorias.
-        </p>
-      </div>
-      <span class="chip" id="saveStatus" data-type="ok">Salvo</span>
-    </div>
+      <section class="card">
+        <div class="row-between">
+          <div>
+            <h1>Comece aqui</h1>
+            <p class="muted">
+              Configure seu ambiente: tema, métodos de pagamento, moeda, metas e categorias.
+            </p>
+          </div>
+          <span class="chip" id="saveStatus" data-type="ok">Salvo</span>
+        </div>
 
-    <div class="grid-2">
-      <div class="panel">
-        <h2>Tema do site</h2>
-        <p class="muted">Escolha um tema (aplica na hora e salva na sua conta).</p>
+        <div class="grid-2">
+          <div class="panel">
+            <h2>Tema do site</h2>
+            <p class="muted">Escolha um tema (aplica na hora e salva na sua conta).</p>
 
-        <label class="field">
-          <span>Tema</span>
-          <select id="themeSelect"></select>
-        </label>
-      </div>
+            <label class="field">
+              <span>Tema</span>
+              <select id="themeSelect"></select>
+            </label>
+          </div>
 
-      <div class="panel mt">
-  <h2>Tipos de entrada</h2>
-  <p class="muted">Digite os tipos de entrada que você usa (ex.: Salário CLT, Freelance, Aluguel).</p>
+          <div class="panel mt">
+            <h2>Tipos de entrada</h2>
+            <p class="muted">Digite os tipos de entrada que você usa (ex.: Salário CLT, Freelance, Aluguel).</p>
 
-  <form id="incomeTypeForm" class="inline-form">
-    <input id="incomeTypeInput" class="input-lite" type="text" placeholder="Ex.: Salário CLT" />
-    <button class="btn primary" type="submit">Adicionar</button>
-  </form>
+            <form id="incomeTypeForm" class="inline-form">
+              <input id="incomeTypeInput" class="input-lite" type="text" placeholder="Ex.: Salário CLT" />
+              <button class="btn primary" type="submit">Adicionar</button>
+            </form>
 
-  <div id="incomeTypesList" class="chips-list"></div>
-</div>
+            <div id="incomeTypesList" class="chips-list"></div>
+          </div>
 
-      <div class="panel">
-        <h2>Moeda</h2>
-        <p class="muted">Define o formato padrão de valores do sistema.</p>
+          <div class="panel">
+            <h2>Moeda</h2>
+            <p class="muted">Define o formato padrão de valores do sistema.</p>
 
-        <label class="field">
-          <span>Moeda</span>
-          <select id="currencySelect">
-            <option value="BRL">BRL — Real (R$)</option>
-            <option value="USD">USD — Dólar ($)</option>
-            <option value="EUR">EUR — Euro (€)</option>
-            <option value="GBP">GBP — Libra (£)</option>
-          </select>
-        </label>
-      </div>
-    </div>
+            <label class="field">
+              <span>Moeda</span>
+              <select id="currencySelect">
+                <option value="BRL">BRL — Real (R$)</option>
+                <option value="USD">USD — Dólar ($)</option>
+                <option value="EUR">EUR — Euro (€)</option>
+                <option value="GBP">GBP — Libra (£)</option>
+              </select>
+            </label>
+          </div>
+        </div>
 
-    <div class="grid-2 mt">
-      <div class="panel">
-        <h2>Métodos de pagamento</h2>
-        <p class="muted">Marque os métodos que você usa.</p>
-        <div id="paymentMethods" class="checkgrid"></div>
-      </div>
+        <div class="grid-2 mt">
+          <div class="panel">
+            <h2>Métodos de pagamento</h2>
+            <p class="muted">Marque os métodos que você usa.</p>
+            <div id="paymentMethods" class="checkgrid"></div>
+          </div>
 
-      <div class="panel">
-        <h2>Categorias de gastos</h2>
-        <p class="muted">Marque as categorias que você quer usar no sistema.</p>
-        <div id="categories" class="checkgrid"></div>
-      </div>
-    </div>
+          <div class="panel">
+            <h2>Categorias de gastos</h2>
+            <p class="muted">Marque as categorias que você quer usar no sistema.</p>
+            <div id="categories" class="checkgrid"></div>
+          </div>
+        </div>
 
-    <div class="panel mt">
-      <h2>Metas</h2>
-      <p class="muted">Crie suas metas e (se quiser) envie uma imagem para cada uma.</p>
+        <div class="panel mt">
+          <h2>Metas</h2>
+          <p class="muted">Crie suas metas e (se quiser) envie uma imagem para cada uma.</p>
 
-      <form id="goalForm" class="goal-form">
-        <label class="field">
-          <span>Nome da meta</span>
-          <input id="goalName" type="text" placeholder="Ex.: Reserva de emergência" required />
-        </label>
+          <form id="goalForm" class="goal-form">
+            <label class="field">
+              <span>Nome da meta</span>
+              <input id="goalName" type="text" placeholder="Ex.: Reserva de emergência" required />
+            </label>
 
-        <label class="field">
-          <span>Imagem (opcional)</span>
-          <input id="goalImage" type="file" accept="image/*" />
-        </label>
+            <label class="field">
+              <span>Imagem (opcional)</span>
+              <input id="goalImage" type="file" accept="image/*" />
+            </label>
 
-        <button class="btn primary" id="goalSubmit" type="submit">Adicionar meta</button>
-      </form>
+            <button class="btn primary" id="goalSubmit" type="submit">Adicionar meta</button>
+          </form>
 
-      <div id="goalsList" class="goals-list"></div>
-    </div>
+          <div id="goalsList" class="goals-list"></div>
+        </div>
 
-    <div class="panel mt">
-  <h2>Preencha os dados do mês</h2>
-  <p class="muted">Selecione o mês para inserir ou editar seus lançamentos.</p>
+        <div class="panel mt">
+          <h2>Preencha os dados do mês</h2>
+          <p class="muted">Selecione o mês para inserir ou editar seus lançamentos.</p>
 
-  <label class="field">
-    <span>Mês</span>
-    <select id="monthSelect">
-      <option value="">Selecione o mês</option>
-      <option value="1">Janeiro</option>
-      <option value="2">Fevereiro</option>
-      <option value="3">Março</option>
-      <option value="4">Abril</option>
-      <option value="5">Maio</option>
-      <option value="6">Junho</option>
-      <option value="7">Julho</option>
-      <option value="8">Agosto</option>
-      <option value="9">Setembro</option>
-      <option value="10">Outubro</option>
-      <option value="11">Novembro</option>
-      <option value="12">Dezembro</option>
-    </select>
-  </label>
-</div>
+          <label class="field">
+            <span>Mês</span>
+            <select id="monthSelect">
+              <option value="">Selecione o mês</option>
+              <option value="1">Janeiro</option>
+              <option value="2">Fevereiro</option>
+              <option value="3">Março</option>
+              <option value="4">Abril</option>
+              <option value="5">Maio</option>
+              <option value="6">Junho</option>
+              <option value="7">Julho</option>
+              <option value="8">Agosto</option>
+              <option value="9">Setembro</option>
+              <option value="10">Outubro</option>
+              <option value="11">Novembro</option>
+              <option value="12">Dezembro</option>
+            </select>
+          </label>
+        </div>
 
-
-    <div class="mt row">
-      <a class="btn ghost" href="anual.html">Ir para Comparativo anual</a>
-      <a class="btn ghost" href="meta.html">Ir para Metas</a>
-      <a class="btn ghost" href="investimentos.html">Ir para Investimentos</a>
-      <a class="btn ghost" href="ir.html">Resumo de IR</a>
-    </div>
-  </section>
-</main>
-
+        <div class="mt row">
+          <a class="btn ghost" href="anual.html">Ir para Comparativo anual</a>
+          <a class="btn ghost" href="meta.html">Ir para Metas</a>
+          <a class="btn ghost" href="investimentos.html">Ir para Investimentos</a>
+          <a class="btn ghost" href="ir.html">Resumo de IR</a>
+        </div>
+      </section>
+    </main>
   </div>
 
-<script type="module">
-  import { bootstrapProtectedPage } from "./js/app.js";
-  import { initHome } from "./js/home.js";
-  import { signOut } from "./js/auth.js";
+  <script type="module">
+    import { bootstrapProtectedPage } from "./js/app.js";
+    import { initHome } from "./js/home.js";
+    import { signOut } from "./js/auth.js";
 
-  await bootstrapProtectedPage();
-  await initHome();
+    await bootstrapProtectedPage();
+    await initHome();
 
-  document.querySelector("#logoutBtn")?.addEventListener("click", async () => {
-    await signOut();
-    window.location.href = "login.html";
-  });
-</script>
-<script type="module" src="./js/app.js"></script>
-<script type="module" src="./js/home.js"></script>
-<script type="module" src="./js/auth.js"></script>
+    document.querySelector("#logoutBtn")?.addEventListener("click", async () => {
+      await signOut();
+      window.location.href = "login.html";
+    });
+  </script>
 </body>
 </html>

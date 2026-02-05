@@ -4,23 +4,22 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Entrar • Controle Financeiro</title>
+
   <link rel="stylesheet" href="./css/base.css" />
   <link rel="stylesheet" href="./css/layout.css" />
   <link rel="stylesheet" href="./css/components.css" />
   <link rel="stylesheet" href="./css/themes.css" />
+
   <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png">
-<link rel="manifest" href="a./ssets/site.webmanifest">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png">
+  <link rel="manifest" href="./assets/site.webmanifest">
 
-<link href="https://fonts.googleapis.com/css2?
-family=Montserrat:wght@400;500;600;700&
-family=Open+Sans:wght@400;500;600&
-display=swap" rel="stylesheet">
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
+
 <body class="auth-page">
   <main class="auth-card">
     <header class="auth-header">
@@ -42,7 +41,7 @@ display=swap" rel="stylesheet">
 
       <label class="field" id="confirmWrap" style="display:none;">
         <span>Confirmar senha</span>
-        <input id="confirm" type="password" autocomplete="new-password" placeholder="••••••••" minlength="6" />
+        <input id="confirm" type="password" autocomplete="new-password" placeholder="••••••••" minlength="8" />
       </label>
 
       <button class="btn primary" id="submitBtn" type="submit">Entrar</button>
@@ -51,10 +50,10 @@ display=swap" rel="stylesheet">
         Dica: senha precisa ter pelo menos 8 caracteres.
       </p>
 
-    <div class="segmented">
-      <button class="seg-btn" data-mode="signup">Cadastrar</button>
-    </div>
-    
+      <div class="segmented">
+        <button class="seg-btn" data-mode="signup" type="button">Cadastrar</button>
+      </div>
+
       <div class="alert" id="alert" style="display:none;"></div>
     </form>
   </main>
@@ -105,12 +104,9 @@ display=swap" rel="stylesheet">
             return;
           }
           await signUp(email, password);
-          // Em alguns setups o Supabase pode exigir confirmação de email.
-          // Se você desativou, já entra. Se ativou, o usuário precisa confirmar.
           showAlert("Conta criada! Se houver confirmação de email habilitada, verifique sua caixa de entrada.");
         }
 
-        // tenta login (serve tanto para login quanto para após cadastro)
         await signIn(email, password);
         window.location.href = "index.html";
 
@@ -121,8 +117,5 @@ display=swap" rel="stylesheet">
       }
     });
   </script>
-  <script type="module" src="./js/app.js"></script>
-<script type="module" src="./js/home.js"></script>
-<script type="module" src="./js/auth.js"></script>
 </body>
 </html>

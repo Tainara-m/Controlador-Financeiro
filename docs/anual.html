@@ -9,20 +9,18 @@
   <link rel="stylesheet" href="./css/layout.css" />
   <link rel="stylesheet" href="./css/components.css" />
   <link rel="stylesheet" href="./css/themes.css" />
-    <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png">
-<link rel="manifest" href="./assets/site.webmanifest">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?
-family=Montserrat:wght@400;500;600;700&
-family=Open+Sans:wght@400;500;600&
-display=swap" rel="stylesheet">
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png">
+  <link rel="manifest" href="./assets/site.webmanifest">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
-<body>
 
+<body>
 <header class="topbar">
   <div class="brand">
     <strong>Controlador Financeiro</strong>
@@ -36,110 +34,85 @@ display=swap" rel="stylesheet">
 
 <div class="shell">
   <main class="content">
-    <!-- ... cabeçalho igual ... -->
 
-<section class="card anual-page">
-
-  <div class="row-between">
-    <div>
-      <h1>Comparativo anual</h1>
-      <p class="muted">Resumo do ano selecionado com base nos seus lançamentos.</p>
-    </div>
-
-    <div class="anual-actions">
-      <label class="field mini">
-        <span>Ano</span>
-        <select id="yearSelect"></select>
-      </label>
-
-      <label class="check mini-inline" title="Mostra apenas do mês 1 até o mês atual">
-        <input type="checkbox" id="ytdToggle" />
-        <span>Até mês atual</span>
-      </label>
-
-      <span class="chip" id="saveStatus" data-type="ok">OK</span>
-    </div>
-  </div>
-
-  <!-- KPIs -->
-  <div class="kpi-grid mt">
-    <div class="kpi">
-      <div class="muted">Entradas (ano)</div>
-      <div class="kpi-value" id="kpiInYear">—</div>
-    </div>
-    <div class="kpi">
-      <div class="muted">Saídas (ano)</div>
-      <div class="kpi-value" id="kpiOutYear">—</div>
-    </div>
-    <div class="kpi kpi-strong">
-      <div class="muted">Saldo (ano)</div>
-      <div class="kpi-value" id="kpiBalYear">—</div>
-    </div>
-  </div>
-
-  <!-- Gráfico topo -->
-  <div class="panel mt">
-    <div class="row-between">
-      <div>
-        <h2>Visão anual</h2>
-        <p class="muted small">Barras: entradas/saídas • Linha: saldo</p>
-      </div>
-      <span class="chip" id="chartHint">—</span>
-    </div>
-
-    <div class="chart-wrap mt">
-      <canvas id="yearChart"></canvas>
-    </div>
-  </div>
-
-  <!-- Resumo mensal com gatinho -->
-  <div class="panel mt">
-    <div class="row-between">
-      <h2>Resumo por mês</h2>
-      <div class="muted small">Clique para abrir o mês</div>
-    </div>
-
-    <div id="monthsGrid" class="months-grid mt"></div>
-  </div>
-
-  <!-- Tops -->
-  <div class="grid-2 mt">
-    <div class="panel">
+    <section class="card anual-page">
       <div class="row-between">
-        <h2>Top categorias (saídas)</h2>
-        <span class="muted small">Ano</span>
+        <div>
+          <h1>Comparativo anual</h1>
+          <p class="muted">Resumo do ano selecionado com base nos seus lançamentos.</p>
+        </div>
+
+        <div class="anual-actions">
+          <label class="field mini">
+            <span>Ano</span>
+            <select id="yearSelect"></select>
+          </label>
+
+          <label class="check mini-inline" title="Mostra apenas do mês 1 até o mês atual">
+            <input type="checkbox" id="ytdToggle" />
+            <span>Até mês atual</span>
+          </label>
+
+          <span class="chip" id="saveStatus" data-type="ok">OK</span>
+        </div>
       </div>
-      <div id="topOutCats" class="list-lite mt"></div>
-    </div>
 
-    <div class="panel">
-      <div class="row-between">
-        <h2>Top tipos de entrada</h2>
-        <span class="muted small">Ano</span>
+      <div class="kpi-grid mt">
+        <div class="kpi">
+          <div class="muted">Entradas (ano)</div>
+          <div class="kpi-value" id="kpiInYear">—</div>
+        </div>
+        <div class="kpi">
+          <div class="muted">Saídas (ano)</div>
+          <div class="kpi-value" id="kpiOutYear">—</div>
+        </div>
+        <div class="kpi kpi-strong">
+          <div class="muted">Saldo (ano)</div>
+          <div class="kpi-value" id="kpiBalYear">—</div>
+        </div>
       </div>
-      <div id="topInTypes" class="list-lite mt"></div>
-    </div>
-  </div>
 
-</section>
+      <div class="panel mt">
+        <div class="row-between">
+          <div>
+            <h2>Visão anual</h2>
+            <p class="muted small">Barras: entradas/saídas</p>
+          </div>
+          <span class="chip" id="chartHint">—</span>
+        </div>
 
-<!-- Scripts: Chart + Plugin -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+        <div class="chart-wrap mt">
+          <canvas id="yearChart"></canvas>
+        </div>
+      </div>
 
-<script type="module">
-  import { bootstrapProtectedPage } from "./js/app.js";
-  import { initAnualPage } from "./js/anual.js";
-  import { signOut } from "./js/auth.js";
+      <div class="panel mt">
+        <div class="row-between">
+          <h2>Resumo por mês</h2>
+          <div class="muted small">Clique para abrir o mês</div>
+        </div>
 
-  await bootstrapProtectedPage();
-  await initAnualPage();
+        <div id="monthsGrid" class="months-grid mt"></div>
+      </div>
 
-  document.querySelector("#logoutBtn")?.addEventListener("click", async () => {
-    await signOut();
-    window.location.href = "login.html";
-  });
-</script>
+      <div class="grid-2 mt">
+        <div class="panel">
+          <div class="row-between">
+            <h2>Top categorias (saídas)</h2>
+            <span class="muted small">Ano</span>
+          </div>
+          <div id="topOutCats" class="list-lite mt"></div>
+        </div>
+
+        <div class="panel">
+          <div class="row-between">
+            <h2>Top tipos de entrada</h2>
+            <span class="muted small">Ano</span>
+          </div>
+          <div id="topInTypes" class="list-lite mt"></div>
+        </div>
+      </div>
+    </section>
 
   </main>
 </div>
@@ -189,6 +162,11 @@ display=swap" rel="stylesheet">
   </a>
 </footer>
 
+<!-- Libs -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+<!-- App -->
 <script type="module">
   import { bootstrapProtectedPage } from "./js/app.js";
   import { initAnualPage } from "./js/anual.js";
@@ -202,8 +180,5 @@ display=swap" rel="stylesheet">
     window.location.href = "login.html";
   });
 </script>
-<script type="module" src="./js/app.js"></script>
-<script type="module" src="./js/home.js"></script>
-<script type="module" src="./js/auth.js"></script>
 </body>
 </html>
