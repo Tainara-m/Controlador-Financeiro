@@ -1,3 +1,4 @@
+// js/mes.js
 import { supabase } from "./supabaseClient.js";
 
 const $ = (s) => document.querySelector(s);
@@ -57,7 +58,6 @@ function groupSum(rows, keyFn) {
 
 /* ===========================
    Incentivo: gatinhos
-   (ajuste paths se necessário)
 =========================== */
 const KITTIES = {
   desesperado: {
@@ -87,11 +87,9 @@ const KITTIES = {
   }
 };
 
-
 function pickKittyByRate(ratePct) {
-  // ratePct = (saldo / entradas) * 100
   if (ratePct <= 0) return KITTIES.desesperado;
-  if (ratePct < 5)  return KITTIES.chorando;
+  if (ratePct < 5) return KITTIES.chorando;
   if (ratePct < 15) return KITTIES.triste;
   if (ratePct < 30) return KITTIES.normal;
   return KITTIES.feliz;
@@ -206,9 +204,8 @@ export async function initMonthPage() {
   // selects do form
   const catSelect = $("#txCategory");
   if (catSelect) {
-    catSelect.innerHTML = categories.length
-      ? categories.map(c => `<option value="${c}">${c}</option>`).join("")
-      : `<option value="outros">outros</option>`;
+    const safeCats = categories.length ? categories : ["Outros"];
+    catSelect.innerHTML = safeCats.map(c => `<option value="${c}">${c}</option>`).join("");
   }
 
   const paySelect = $("#txPayment");
@@ -220,28 +217,33 @@ export async function initMonthPage() {
 
   const incomeSelect = $("#txIncomeType");
   if (incomeSelect) {
-    incomeSelect.innerHTML = `<option value="">—</option>` +
+    incomeSelect.innerHTML =
+      `<option value="">—</option>` +
       incomeTypes.map(t => `<option value="${t}">${t}</option>`).join("");
   }
 
-  // tipo entrada habilita/desabilita
+  // tipo entrada habilita/desabilita + desabilita categorias no modo entrada
   const txType = $("#txType");
   function updateIncomeType() {
-  if (!incomeSelect || !txType || !catSelect) return;
+    if (!incomeSelect || !txType) return;
 
-  if (txType.value === "entrada") {
-    // Entrada
-    incomeSelect.disabled = false;
-    catSelect.disabled = true;
-    catSelect.value = "";
+    const catSel = $("#txCategory");
 
-  } else {
-    // Saída
-    incomeSelect.value = "";
-    incomeSelect.disabled = true;
-    catSelect.disabled = false;
+    if (txType.value === "entrada") {
+      incomeSelect.disabled = false;
+
+      // categoria visualmente desabilitada, mas garantimos valor padrão
+      if (catSel) {
+        catSel.value = "Outros";
+        catSel.disabled = true;
+      }
+    } else {
+      incomeSelect.value = "";
+      incomeSelect.disabled = true;
+
+      if (catSel) catSel.disabled = false;
+    }
   }
-}
 
   updateIncomeType();
   txType?.addEventListener("change", updateIncomeType);
@@ -388,69 +390,78 @@ export async function initMonthPage() {
   }
 
   // Inserir
-$("#txForm")?.addEventListener("submit", async (e) => {
-  e.preventDefault();
+  $("#txForm")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  try {
-    setStatus("Salvando…", "warn");
+    try {
+      setStatus("Salvando…", "warn");
 
-    const type = $("#txType")?.value;
-    const income_type = (type === "entrada") ? ($("#txIncomeType")?.value || null) : null;
+      const type = $("#txType")?.value;
 
-    const payload = {
-  user_id: user.id,
-  year,
-  month,
-  date: $("#txDate")?.value,
-  type,
-  income_type: type === "entrada" ? $("#txIncomeType")?.value || null : null,
-  category: type === "saida" ? $("#txCategory")?.value : null,
-  payment_method: $("#txPayment")?.value || null,
-  description: ($("#txDesc")?.value || "").trim() || null,
-  amount: 0
-};
+      const income_type =
+        type === "entrada"
+          ? ($("#txIncomeType")?.value || null)
+          : null;
 
+      // ✅ category SEMPRE preenchida (DB exige NOT NULL)
+      const category =
+        type === "entrada"
+          ? "Outros"
+          : ($("#txCategory")?.value || "Outros");
 
-    const amount = Number($("#txAmount")?.value || 0);
+      const amount = Number($("#txAmount")?.value || 0);
 
-    if ( !payload.date || !payload.type || !(amount > 0) || (type === "entrada" && !payload.income_type) ||
-  (type === "saida" && !payload.category)
-) {
-  setStatus("Preencha corretamente os campos", "err");
-  return;
-}
+      const payload = {
+        user_id: user.id,
+        year,
+        month,
+        date: $("#txDate")?.value,
+        type,
+        income_type,
+        category,
+        payment_method: $("#txPayment")?.value || null,
+        description: ($("#txDesc")?.value || "").trim() || null,
+        amount
+      };
 
-    payload.amount = amount;
+      // validações
+      if (!payload.date || !payload.type || !(amount > 0)) {
+        setStatus("Preencha corretamente os campos", "err");
+        return;
+      }
 
-    console.log("[TX] payload", payload);
+      if (type === "entrada" && !payload.income_type) {
+        setStatus("Escolha o tipo de entrada", "err");
+        return;
+      }
 
-    const { data: insData, error: insErr } = await supabase
-      .from("transactions")
-      .insert(payload)
-      .select("id")
-      .single();
+      const { data: insData, error: insErr } = await supabase
+        .from("transactions")
+        .insert(payload)
+        .select("id")
+        .single();
 
-    console.log("[TX] insert", insData, insErr);
+      if (insErr) {
+        console.error("[TX] insert error", insErr);
+        setStatus("Erro ao salvar", "err");
+        alert(`INSERT ERROR:\n${insErr.message}\n\n${JSON.stringify(insErr, null, 2)}`);
+        return;
+      }
 
-    if (insErr) {
+      console.log("[TX] insert ok", insData);
+
+      $("#txForm")?.reset();
+      setISODateInput("#txDate", defaultDate);
+      updateIncomeType();
+
+      await refresh();
+      setStatus("Salvo", "ok");
+    } catch (err) {
+      console.error("[TX] catch", err);
       setStatus("Erro ao salvar", "err");
-      alert(`INSERT ERROR:\n${insErr.message}\n\n${JSON.stringify(insErr, null, 2)}`);
-      return;
+      alert(`CATCH:\n${err?.message || ""}`);
     }
-
-    $("#txForm")?.reset();
-    setISODateInput("#txDate", defaultDate);
-    updateIncomeType();
-
-    await refresh();
-    setStatus("Salvo", "ok");
-  } catch (err) {
-    console.error("[TX] catch", err);
-    setStatus("Erro ao salvar", "err");
-    alert(`CATCH:\n${err?.message || ""}\n\n${JSON.stringify(err, null, 2)}`);
-  }
-});
-
+  });
 
   // Excluir
   $("#txTable")?.addEventListener("click", async (e) => {
@@ -460,8 +471,6 @@ $("#txForm")?.addEventListener("submit", async (e) => {
     if (!confirm("Excluir este lançamento?")) return;
 
     try {
-      console.log("[TX] submit disparou ✅");
-
       setStatus("Salvando…", "warn");
       const { error } = await supabase.from("transactions").delete().eq("id", btn.dataset.del);
       if (error) throw error;
