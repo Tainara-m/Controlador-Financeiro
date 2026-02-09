@@ -300,3 +300,80 @@
   }
 }
 
+/* =========================
+   MÊS — Responsividade completa
+========================= */
+
+/* Tablet/Notebook menor: melhora nav e KPIs sem “quebrar tudo” cedo demais */
+@media (max-width: 980px){
+  .month-header{
+    align-items: flex-start;
+  }
+
+  /* Nav vira “linha elástica” e não estoura */
+  .month-nav{
+    width: 100%;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  .month-nav .field.mini{
+    min-width: 180px;
+  }
+
+  /* KPIs: 3 -> 2 colunas antes de virar 1 */
+  .kpi-grid{
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Charts mais confortáveis */
+  .charts{
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile: empilha header, nav e garante selects/usabilidade */
+@media (max-width: 700px){
+  .month-header{
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .month-title{
+    width: 100%;
+  }
+
+  .month-nav{
+    width: 100%;
+    justify-content: stretch;
+    flex-wrap: wrap;
+  }
+
+  /* Mês/Ano ocupam largura total no mobile */
+  .month-nav .field.mini{
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+
+  /* Chip “Salvo” também entra no fluxo */
+  #saveStatus{
+    flex: 0 0 auto;
+    margin-left: auto;
+  }
+
+  /* KPIs: 2 -> 1 coluna no mobile */
+  .kpi-grid{
+    grid-template-columns: 1fr;
+  }
+
+  /* Linha topo (KPIs + incentivo) empilha */
+  .month-top-row{
+    grid-template-columns: 1fr;
+  }
+
+  /* Linha 2 (Gráficos + Novo lançamento) já vira 1 coluna pelo seu @media 860,
+     mas aqui garantimos consistência com 700px também */
+  .month-summary .grid-2{
+    grid-template-columns: 1fr;
+  }
+}

@@ -175,7 +175,7 @@ export async function initMonthPage() {
 
   // Busca e filtro (DEPOIS do perfil estar carregado)
   const searchEl = document.querySelector("#txSearch");
-  const filterEl = document.querySelector("#txFilter");
+const filterEl = document.querySelector("#txFilter");
 
   function getFilteredRows() {
     const q = (searchEl?.value || "").trim().toLowerCase();

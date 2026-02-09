@@ -437,3 +437,30 @@ select.input-lite{
   .bn-balance{ display: none; }
 }
 
+/* =========================
+   MÊS — tabela e gráficos responsivos
+========================= */
+
+/* Canvas do Chart.js sempre responsivo dentro do card */
+.chart-box canvas{
+  width: 100% !important;
+  height: auto !important;
+  display: block;
+}
+
+/* Tabela: no mobile, vira scroll horizontal ao invés de “espremer” tudo */
+.table-lite{
+  overflow: hidden; /* default mantém borda/raio bonitos */
+}
+
+/* Em telas menores, permite scroll horizontal com toque */
+@media (max-width: 760px){
+  .table-lite{
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table-lite table{
+    min-width: 720px; /* garante colunas legíveis, sem virar “tudo quebrado” */
+  }
+}
