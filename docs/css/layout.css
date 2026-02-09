@@ -377,3 +377,50 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* iPhone XR e similares: evitar overflow no header */
+@media (max-width: 430px){
+  .topbar{
+    flex-wrap: wrap;          /* permite quebrar linha */
+    gap: 10px;
+    padding: 10px 12px;       /* reduz pressão lateral */
+  }
+
+  .brand{
+    min-width: 0;             /* permite encolher */
+    flex: 1 1 auto;
+    gap: 8px;
+    flex-wrap: wrap;          /* chip pode cair embaixo do nome */
+  }
+
+  .brand strong{
+    font-size: 14px;          /* reduz um pouco o título */
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+
+  /* chip não pode “estourar” a largura */
+  .brand .chip{
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .top-actions{
+    flex: 0 0 auto;
+    margin-left: auto;        /* joga ações pro canto direito */
+  }
+
+  /* botão mais compacto (sem mudar padrão geral) */
+  .top-actions .btn{
+    padding: 8px 10px;
+    font-size: 13px;
+    border-radius: 12px;
+  }
+}
+
+/* Cinto de segurança: se algum elemento ainda vazar, não cria scroll horizontal */
+html, body{
+  overflow-x: hidden;
+}
