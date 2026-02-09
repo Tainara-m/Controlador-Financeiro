@@ -45,101 +45,120 @@
         </div>
 
         <div class="home-grid">
-          <div class="panel">
-            <h2>Tema do site</h2>
-            <p class="muted m1">Escolha um tema (aplica na hora e salva na sua conta).</p>
 
-            <label class="field"> 
-              <select id="themeSelect"></select>
-            </label>
-          </div>
+  <!-- 1ª linha: Tema, Tipos de entrada, Moeda -->
+  <div class="home-top-row">
+    <div class="panel home-eq">
+      <h2>Tema do site</h2>
+      <p class="muted m1">Escolha um tema (aplica na hora e salva na sua conta).</p>
 
-          <div class="panel">
-            <h2>Tipos de entrada</h2>
-            <p class="muted m1">Digite os tipos de entrada que você usa (ex.: Salário CLT, Freelance, Aluguel).</p>
+      <label class="field">
+        <select id="themeSelect"></select>
+      </label>
+    </div>
 
-            <form id="incomeTypeForm" class="inline-form">
-              <input id="incomeTypeInput" class="input-lite" type="text" placeholder="Ex.: Salário CLT" />
-              <button class="btn primary" type="submit">Adicionar</button>
-            </form>
+    <div class="panel home-eq">
+      <h2>Tipos de entrada</h2>
+      <p class="muted m1">Digite os tipos de entrada que você usa (ex.: Salário CLT, Freelance, Aluguel).</p>
 
-            <div id="incomeTypesList" class="chips-list"></div>
-          </div>
+      <form id="incomeTypeForm" class="inline-form">
+        <input id="incomeTypeInput" class="input-lite" type="text" placeholder="Ex.: Salário CLT" />
+        <button class="btn primary" type="submit">Adicionar</button>
+      </form>
 
-          <div class="panel">
-            <h2>Moeda</h2>
-            <p class="muted m1">Define o formato padrão de valores do sistema.</p>
+      <div id="incomeTypesList" class="chips-list"></div>
+    </div>
 
-            <label class="field">
-              <select id="currencySelect">
-                <option value="BRL">BRL — Real (R$)</option>
-                <option value="USD">USD — Dólar ($)</option>
-                <option value="EUR">EUR — Euro (€)</option>
-                <option value="GBP">GBP — Libra (£)</option>
-              </select>
-            </label>
-          </div>
-        </div>
+    <div class="panel home-eq">
+      <h2>Moeda</h2>
+      <p class="muted m1">Define o formato padrão de valores do sistema.</p>
 
-        <div class="grid-2 mt">
-          <div class="panel">
-            <h2>Métodos de pagamento</h2>
-            <p class="muted m1">Marque os métodos que você usa.</p>
-            <div id="paymentMethods" class="checkgrid"></div>
-          </div>
+      <label class="field">
+        <select id="currencySelect">
+          <option value="BRL">BRL — Real (R$)</option>
+          <option value="USD">USD — Dólar ($)</option>
+          <option value="EUR">EUR — Euro (€)</option>
+          <option value="GBP">GBP — Libra (£)</option>
+        </select>
+      </label>
+    </div>
+  </div>
 
-          <div class="panel panel-goal">
-            <h2>Categorias de gastos</h2>
-            <p class="muted m1">Marque as categorias que você quer usar no sistema.</p>
-            <div id="categories" class="checkgrid"></div>
-          </div>
-        </div>
+  <div class="home-3col-row">
 
-        <div class="panel mt">
-          <h2>Metas</h2>
-          <p class="muted">Crie suas metas e (se quiser) envie uma imagem para cada uma.</p>
+  <!-- Coluna 1 (stack): Métodos + Mês -->
+  <div class="home-col home-col-stack">
+    <div class="panel">
+      <h2>Métodos de pagamento</h2>
+      <p class="muted m1">Marque os métodos que você usa.</p>
+      <div id="paymentMethods" class="checkgrid"></div>
+    </div>
 
-          <form id="goalForm" class="goal-form">
-            <label class="field">
-              <span>Nome da meta</span>
-              <input id="goalName" type="text" placeholder="Ex.: Reserva de emergência" required />
-            </label>
+    <div class="panel">
+      <h2>Preencha os dados do mês</h2>
+      <p class="muted m1">Selecione o mês para inserir ou editar seus lançamentos.</p>
 
-            <label class="field">
-              <span>Imagem (opcional)</span>
-              <input id="goalImage" type="file" accept="image/*" />
-            </label>
+      <label class="field">
+        <span>Mês</span>
+        <select id="monthSelect">
+          <option value="">Selecione o mês</option>
+          <option value="1">Janeiro</option>
+          <option value="2">Fevereiro</option>
+          <option value="3">Março</option>
+          <option value="4">Abril</option>
+          <option value="5">Maio</option>
+          <option value="6">Junho</option>
+          <option value="7">Julho</option>
+          <option value="8">Agosto</option>
+          <option value="9">Setembro</option>
+          <option value="10">Outubro</option>
+          <option value="11">Novembro</option>
+          <option value="12">Dezembro</option>
+        </select>
+      </label>
+    </div>
+  </div>
 
-            <button class="btn primary" id="goalSubmit" type="submit">Adicionar meta</button>
-          </form>
+  <!-- Coluna 2: Categorias -->
+  <div class="home-col">
+    <div class="panel">
+      <h2>Categorias de gastos</h2>
+      <p class="muted m1">Marque as categorias que você quer usar no sistema.</p>
+      <div id="categories" class="checkgrid"></div>
+    </div>
+  </div>
 
-          <div id="goalsList" class="goals-list"></div>
-        </div>
+  <!-- Coluna 3: Metas -->
+  <div class="home-col">
+    <div class="panel">
+      <h2>Metas</h2>
+      <p class="muted m1">Crie suas metas e (se quiser) envie uma imagem para cada uma.</p>
 
-        <div class="panel mt">
-          <h2>Preencha os dados do mês</h2>
-          <p class="muted">Selecione o mês para inserir ou editar seus lançamentos.</p>
+      <form id="goalForm" class="goal-form">
+        <label class="field">
+          <span>Nome da meta</span>
+          <input id="goalName" type="text" placeholder="Ex.: Reserva de emergência" required />
+        </label>
 
-          <label class="field">
-            <span>Mês</span>
-            <select id="monthSelect">
-              <option value="">Selecione o mês</option>
-              <option value="1">Janeiro</option>
-              <option value="2">Fevereiro</option>
-              <option value="3">Março</option>
-              <option value="4">Abril</option>
-              <option value="5">Maio</option>
-              <option value="6">Junho</option>
-              <option value="7">Julho</option>
-              <option value="8">Agosto</option>
-              <option value="9">Setembro</option>
-              <option value="10">Outubro</option>
-              <option value="11">Novembro</option>
-              <option value="12">Dezembro</option>
-            </select>
-          </label>
-        </div>
+        <label class="field">
+          <span>Imagem (opcional)</span>
+          <input id="goalImage" type="file" accept="image/*" />
+        </label>
 
+        <button class="btn primary" id="goalSubmit" type="submit">Adicionar meta</button>
+      </form>
+
+      <div id="goalsList" class="goals-list"></div>
+    </div>
+  </div>
+
+</div>
+
+
+</div>
+
+
+        
         <div class="mt row">
           <a class="btn ghost" href="anual.html">Ir para Comparativo anual</a>
           <a class="btn ghost" href="meta.html">Ir para Metas</a>

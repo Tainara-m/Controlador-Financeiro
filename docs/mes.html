@@ -152,21 +152,21 @@
                   <select id="txCategory"></select>
                 </label>
 
-                <label class="field">
-                  <span>Método de pagamento</span>
-                  <select id="txPayment"></select>
-                </label>
+                <label class="field tx-payment">
+  <span>Método de pagamento</span>
+  <select id="txPayment"></select>
+</label>
 
-                <label class="field">
-                  <span>Descrição</span>
-                  <input id="txDesc" type="text" placeholder="Descrição opcional" />
-                </label>
-              </div>
+<label class="field tx-amount">
+  <span>Valor</span>
+  <input id="txAmount" type="number" step="0.01" min="0.01" placeholder="0,00" required />
+</label>
 
-              <label class="field field-strong">
-                <span>Valor</span>
-                <input id="txAmount" type="number" step="0.01" min="0.01" placeholder="0,00" required />
-              </label>
+
+                <label class="field tx-desc">
+  <span>Descrição</span>
+  <textarea id="txDesc" placeholder="Descrição opcional"></textarea>
+</label>
 
               <button class="btn primary w-full" type="submit">Adicionar lançamento</button>
             </form>
@@ -174,24 +174,27 @@
         </div>
       </div>
 
-      <!-- Ações -->
-      <div class="mt">
-        <div class="panel">
-          <div class="row-between">
-            <h2>Lançamentos</h2>
-            <div class="table-actions">
-              <input id="txSearch" class="input-lite" placeholder="Buscar..." />
-              <select id="txFilterType" class="input-lite">
-                <option value="">Todos</option>
-                <option value="entrada">Entradas</option>
-                <option value="saida">Saídas</option>
-              </select>
-            </div>
-          </div>
+<!-- Lançamentos -->
+<div class="mt">
+  <div class="panel tx-card">
+    <div class="tx-head">
+      <h2>Lançamentos</h2>
 
-          <div id="txTable" class="table-lite mt"></div>
-        </div>
+      <div class="tx-actions">
+        <input id="txSearch" class="input-lite" type="search" placeholder="Buscar..." />
+        <select id="txFilter" class="input-lite">
+          <option value="">Todos</option>
+          <option value="entrada">Entradas</option>
+          <option value="saida">Saídas</option>
+        </select>
       </div>
+    </div>
+
+    <!-- Um único container (SEM id duplicado) -->
+    <div id="txTable" class="table-lite"></div>
+  </div>
+</div>
+
 
     </section>
   </main>

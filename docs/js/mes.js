@@ -141,22 +141,7 @@ export async function initMonthPage() {
 
   // ===== Estado local do mês =====
   let cachedRows = [];
-
-  // Busca e filtro (se existirem no HTML)
-  const searchEl = document.querySelector("#txSearch");
-  const filterEl = document.querySelector("#txFilterType");
-
-  function getFilteredRows() {
-    const q = (searchEl?.value || "").trim().toLowerCase();
-    const t = (filterEl?.value || "");
-
-    return cachedRows.filter(r => {
-      const okType = !t || r.type === t;
-      const hay = `${r.description || ""} ${r.category || ""} ${r.payment_method || ""} ${r.income_type || ""}`.toLowerCase();
-      const okQ = !q || hay.includes(q);
-      return okType && okQ;
-    });
-  }
+  let currentCurrency = "BRL"; // local currency state
 
   // lê ano/mês da URL
   const params = new URLSearchParams(window.location.search);
@@ -182,11 +167,27 @@ export async function initMonthPage() {
     return;
   }
 
-  const categories = Array.isArray(profile.categories) ? profile.categories : [];
+  const categories = Array.isArray(profile.categories) ? profile.categories : ["Outros"];
   const payments = Array.isArray(profile.payment_methods) ? profile.payment_methods : [];
   const incomeTypes = Array.isArray(profile.income_types) ? profile.income_types : [];
-  const currency = profile.currency || "BRL";
-  window.__currency = currency;
+  currentCurrency = profile.currency || "BRL";
+  window.__currency = currentCurrency;
+
+  // Busca e filtro (DEPOIS do perfil estar carregado)
+  const searchEl = document.querySelector("#txSearch");
+  const filterEl = document.querySelector("#txFilter");
+
+  function getFilteredRows() {
+    const q = (searchEl?.value || "").trim().toLowerCase();
+    const t = (filterEl?.value || "");
+
+    return cachedRows.filter(r => {
+      const okType = !t || r.type === t;
+      const hay = `${r.description || ""} ${r.category || ""} ${r.payment_method || ""} ${r.income_type || ""}`.toLowerCase();
+      const okQ = !q || hay.includes(q);
+      return okType && okQ;
+    });
+  }
 
   // título
   $("#monthTitle") && ($("#monthTitle").textContent = `${getMonthName(month)} / ${year}`);
@@ -204,8 +205,7 @@ export async function initMonthPage() {
   // selects do form
   const catSelect = $("#txCategory");
   if (catSelect) {
-    const safeCats = categories.length ? categories : ["Outros"];
-    catSelect.innerHTML = safeCats.map(c => `<option value="${c}">${c}</option>`).join("");
+    catSelect.innerHTML = categories.map(c => `<option value="${c}">${c}</option>`).join("");
   }
 
   const paySelect = $("#txPayment");
@@ -232,9 +232,11 @@ export async function initMonthPage() {
     if (txType.value === "entrada") {
       incomeSelect.disabled = false;
 
-      // categoria visualmente desabilitada, mas garantimos valor padrão
+      // categoria visualmente desabilitada e setada como "Outros"
       if (catSel) {
-        catSel.value = "Outros";
+        // ✅ Garante que "Outros" existe ou usa a primeira categoria
+        const defaultCat = categories.includes("Outros") ? "Outros" : (categories[0] || "Outros");
+        catSel.value = defaultCat;
         catSel.disabled = true;
       }
     } else {
@@ -264,8 +266,9 @@ export async function initMonthPage() {
       return `<option value="${mm}">${getMonthName(mm)}</option>`;
     }).join("");
 
+    // ✅ Oferece 10 anos para trás E para frente
     const curY = new Date().getFullYear();
-    const years = Array.from({ length: 6 }, (_, i) => curY - i);
+    const years = Array.from({ length: 21 }, (_, i) => curY - 10 + i);
     yearNav.innerHTML = years.map(y => `<option value="${y}">${y}</option>`).join("");
 
     monthNav.value = String(month);
@@ -311,9 +314,9 @@ export async function initMonthPage() {
     const outTotal = outRows.reduce((a, r) => a + (Number(r.amount) || 0), 0);
     const bal = inTotal - outTotal;
 
-    $("#kpiIn") && ($("#kpiIn").textContent = money(inTotal, currency));
-    $("#kpiOut") && ($("#kpiOut").textContent = money(outTotal, currency));
-    $("#kpiBal") && ($("#kpiBal").textContent = money(bal, currency));
+    $("#kpiIn") && ($("#kpiIn").textContent = money(inTotal, currentCurrency));
+    $("#kpiOut") && ($("#kpiOut").textContent = money(outTotal, currentCurrency));
+    $("#kpiBal") && ($("#kpiBal").textContent = money(bal, currentCurrency));
 
     // Incentivo do mês
     const ratePct = inTotal > 0 ? (bal / inTotal) * 100 : 0;
@@ -347,12 +350,15 @@ export async function initMonthPage() {
 
     // Saldo no rodapé (se existir)
     const fb = document.querySelector("#footerBalance");
-    if (fb) fb.textContent = money(bal, currency);
+    if (fb) fb.textContent = money(bal, currentCurrency);
   }
 
   function renderTable(rows) {
     const wrap = $("#txTable");
-    if (!wrap) return;
+    if (!wrap) {
+      console.warn("[renderTable] #txTable não encontrado no DOM");
+      return;
+    }
 
     if (!rows.length) {
       wrap.innerHTML = `<p class="muted">Nenhum lançamento neste mês.</p>`;
@@ -360,26 +366,32 @@ export async function initMonthPage() {
     }
 
     wrap.innerHTML = `
-      <div class="tl-head">
-        <span>Data</span>
-        <span>Tipo</span>
-        <span>Detalhe</span>
-        <span>Categoria</span>
-        <span>Método</span>
-        <span>Valor</span>
-        <span></span>
-      </div>
-      ${rows.map(r => `
-        <div class="tl-row">
-          <span>${new Date(r.date).toLocaleDateString("pt-BR")}</span>
-          <span>${r.type}</span>
-          <span>${r.type === "entrada" ? (r.income_type || "—") : "—"}</span>
-          <span>${r.category}</span>
-          <span>${r.payment_method || "—"}</span>
-          <span>${money(r.amount, currency)}</span>
-          <button class="btn danger" data-del="${r.id}" type="button">Excluir</button>
-        </div>
-      `).join("")}
+      <table>
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Tipo</th>
+            <th>Detalhe</th>
+            <th>Categoria</th>
+            <th>Método</th>
+            <th>Valor</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows.map(r => `
+            <tr>
+              <td>${new Date(r.date).toLocaleDateString("pt-BR")}</td>
+              <td>${r.type === "entrada" ? "Entrada" : "Saída"}</td>
+              <td>${r.type === "entrada" ? (r.income_type || "—") : (r.description || "—")}</td>
+              <td>${r.category || "—"}</td>
+              <td>${r.payment_method || "—"}</td>
+              <td class="td-money">${money(r.amount, currentCurrency)}</td>
+              <td class="td-action"><button class="btn danger btn-sm" data-del="${r.id}" type="button">Excluir</button></td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
     `;
   }
 
@@ -397,25 +409,52 @@ export async function initMonthPage() {
       setStatus("Salvando…", "warn");
 
       const type = $("#txType")?.value;
+      const amount = Number($("#txAmount")?.value || 0);
+      const dateValue = $("#txDate")?.value;
+
+      // ✅ Validações melhoradas
+      if (!dateValue) {
+        setStatus("Escolha uma data válida", "err");
+        return;
+      }
+
+      if (!type || !["entrada", "saida"].includes(type)) {
+        setStatus("Escolha um tipo válido", "err");
+        return;
+      }
+
+      if (!(amount > 0) || amount > 999999999) {
+        setStatus("Valor deve estar entre 0,01 e 999.999.999", "err");
+        return;
+      }
+
+      // Valida se a data é válida e está no mês correto
+      const txDate = new Date(dateValue);
+      if (isNaN(txDate.getTime())) {
+        setStatus("Data inválida", "err");
+        return;
+      }
 
       const income_type =
         type === "entrada"
           ? ($("#txIncomeType")?.value || null)
           : null;
 
-      // ✅ category SEMPRE preenchida (DB exige NOT NULL)
+      if (type === "entrada" && !income_type) {
+        setStatus("Escolha o tipo de entrada", "err");
+        return;
+      }
+
       const category =
         type === "entrada"
-          ? "Outros"
+          ? (categories.includes("Outros") ? "Outros" : (categories[0] || "Outros"))
           : ($("#txCategory")?.value || "Outros");
-
-      const amount = Number($("#txAmount")?.value || 0);
 
       const payload = {
         user_id: user.id,
         year,
         month,
-        date: $("#txDate")?.value,
+        date: dateValue,
         type,
         income_type,
         category,
@@ -423,17 +462,6 @@ export async function initMonthPage() {
         description: ($("#txDesc")?.value || "").trim() || null,
         amount
       };
-
-      // validações
-      if (!payload.date || !payload.type || !(amount > 0)) {
-        setStatus("Preencha corretamente os campos", "err");
-        return;
-      }
-
-      if (type === "entrada" && !payload.income_type) {
-        setStatus("Escolha o tipo de entrada", "err");
-        return;
-      }
 
       const { data: insData, error: insErr } = await supabase
         .from("transactions")
@@ -518,3 +546,4 @@ export async function initMonthPage() {
 
   await refresh();
 }
+

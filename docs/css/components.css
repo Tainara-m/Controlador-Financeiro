@@ -45,6 +45,11 @@
   place-items: center;
 }
 
+.btn-sm{
+  padding: 6px 10px;
+  font-size: 13px;
+}
+
 .w-full{ width: 100%; }
 
 /* ===== Campos / Inputs ===== */
@@ -66,17 +71,15 @@
   transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
 }
 
-/* Inputs de texto (maiores e mais confortáveis) */
 .field input[type="text"],
 .field input[type="search"],
 .field textarea,
 .input-lite{
   padding: 12px 14px;
   font-size: 15px;
-  background-color:var(--bg-spot-2);
+  background-color: var(--bg-spot-2);
 }
 
-/* Inputs “curtos” (valor, data, seleção...) podem ser menores */
 .field input[type="number"],
 .field input[type="date"],
 .field select,
@@ -192,80 +195,163 @@ select.input-lite{
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   overflow: hidden;
-  background: rgba(255,255,255,.04);
+  background: rgba(0,0,0,.08);
 }
 
-/* Tabela com bordas (para o card de lançamentos) */
 .table-lite table{
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
 }
+
 .table-lite th,
 .table-lite td{
+  border: 1px solid var(--glass-border);
   padding: 10px 12px;
-  border: 1px solid rgba(255,255,255,.10);
-  vertical-align: top;
-}
-.table-lite th{
-  background: rgba(255,255,255,.08);
   text-align: left;
+  vertical-align: top;
+  font-size: 14px;
+}
+
+.table-lite thead th{
+  background: rgba(255,255,255,.10);
   font-weight: 800;
 }
-.table-lite tbody tr:nth-child(even){ background: rgba(255,255,255,.04); }
 
-/* Fallback caso o JS renderize linhas em divs */
-.table-lite > .tx-row,
-.table-lite > div{
-  border-top: 1px solid rgba(255,255,255,.10);
+.table-lite tbody tr:nth-child(even) td{
+  background: rgba(255,255,255,.03);
+}
+
+.table-lite tbody tr:hover td{
+  background: rgba(var(--primary-rgb), .10);
+}
+
+.td-money{ white-space: nowrap; text-align: right; }
+.td-action{ white-space: nowrap; text-align: right; }
+
+/* Lançamentos em div (fallback com bordas) */
+.tx-table{
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.tx-row{
+  display: contents;
+}
+
+.tx-cell{
+  padding: 10px 12px;
+  border-right: 1px solid var(--glass-border);
+  border-bottom: 1px solid var(--glass-border);
+  font-size: 14px;
+}
+
+.tx-cell:last-child{
+  border-right: none;
+}
+
+.tx-head .tx-cell{
+  font-weight: 600;
+  background: rgba(255,255,255,.10);
+}
+
+.tx-row:not(.tx-head):hover .tx-cell{
+  background: rgba(124,92,255,.08);
+}
+
+.table-lite .btn,
+.tx-cell .btn{
+  padding: 6px 10px;
+  font-size: 13px;
+}
+
+/* Cabeçalho do card + ações */
+.tx-head{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.tx-head h2{ margin: 0; }
+
+.tx-actions{
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.tx-actions input{ flex: 1 1 360px; min-width: 220px; }
+.tx-actions select{ flex: 0 0 220px; min-width: 180px; }
+
+.tx-body{
+  width: 100%;
+}
+
+@media (max-width: 760px){
+  .checkgrid{ grid-template-columns: 1fr; }
+  .tx-head{ flex-wrap: wrap; }
+  .tx-actions{ width: 100%; justify-content: stretch; flex-wrap: wrap; }
+  .tx-actions input, .tx-actions select{ flex: 1 1 100%; min-width: 0; }
+}
+
+/* Descrição e valores no formulário */
+.tx-desc{ grid-column: 1 / -1; }
+#txDesc{
+  min-height: 84px;
+  resize: vertical;
+}
+
+.tx-form .field-strong{ grid-column: 1 / -1; }
+
+/* Grid do formulário de transações */
+.tx-form .tx-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-items: end;
+}
+
+.tx-payment{ grid-column: 1; }
+.tx-amount{ grid-column: 2; }
+
+.tx-amount input{
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.tx-form .btn.primary.w-full{
+  margin-top: 10px;
+}
+
+@media (max-width: 760px){
+  .tx-form .tx-grid{ grid-template-columns: 1fr; }
+  .tx-payment, .tx-amount{ grid-column: auto; }
+  .bn-balance{ display: none; }
 }
 
 /* ===== Bottom nav ===== */
-/* ===== Footer nav (não fixo, compacto) ===== */
 .bottom-nav{
-  position: static;          /* era fixed */
+  position: static;
   left: auto; right: auto; bottom: auto;
   z-index: auto;
-
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
   justify-content: center;
-
   padding: 10px 12px;
   margin-top: 14px;
-
   background: var(--glass-nav-bg);
   border-top: 1px solid var(--glass-border);
-
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
-}
-
-/* itens menores */
-.bn-item{
-  flex: 0 1 auto;
-  min-width: 74px;
-  padding: 8px 10px;
-  gap: 4px;
-  border-radius: 12px;
-}
-
-.bn-ico svg{ width: 18px; height: 18px; }
-.bn-item small{ font-size: 11px; }
-
-/* pill menor */
-.bn-active-pill{
-  bottom: 4px;
-  width: 26px;
-  height: 3px;
-}
-
-/* saldo no rodapé fica compacto */
-.bn-balance{
-  min-width: 140px;
-  padding: 8px 10px;
-  border-radius: 12px;
 }
 
 .bn-item{
@@ -290,7 +376,33 @@ select.input-lite{
   border-color: rgba(var(--primary-rgb), .22);
 }
 
-.bn-ico svg{ width: 22px; height: 22px; fill: currentColor; opacity: .95; }
+.bn-ico svg{
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  opacity: .85;
+  transition: transform .18s ease, opacity .18s ease;
+}
+
+.bn-item.is-active .bn-ico svg{
+  opacity: 1;
+  transform: translateY(-1px);
+  filter: drop-shadow(0 2px 6px rgba(var(--primary-rgb), .35));
+}
+
+.bn-item:hover .bn-ico svg{
+  opacity: .95;
+}
+
+.bn-item[aria-label="Home"] .bn-ico svg,
+.bn-item[aria-label="Mês"] .bn-ico svg{
+  transform: scale(.95);
+}
+
+.bn-item small{
+  font-size: 11px;
+  letter-spacing: .02em;
+}
 
 .bn-active-pill{
   position: absolute;
@@ -314,9 +426,14 @@ select.input-lite{
 .bn-balance-label{ font-size: 11px; color: var(--muted); }
 .bn-balance-value{ font-weight: 900; }
 
+/* Select styling */
+#themeSelect,#currencySelect,#monthSelect{
+  background: var(--bg-spot-1);
+  color: #fff;
+}
+
 @media (max-width: 520px){
   .checkgrid{ grid-template-columns: 1fr; }
   .bn-balance{ display: none; }
 }
 
-#themeSelect,#currencySelect,#monthSelect{background:var(--bg-spot-1);color: #fff;}

@@ -56,11 +56,15 @@
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-soft);
-  justify-content: center;
-  align-items: center;
   padding: 16px;
-  width: 390px;
-  height: 200px;
+
+  /* deixa o grid definir o tamanho */
+  width: auto;
+  height: auto;
+
+  /* não centraliza tudo (inputs ficam melhores alinhados) */
+  display: block;
+
   backdrop-filter: blur(calc(var(--glass-blur) - 2px)) saturate(var(--glass-sat));
   -webkit-backdrop-filter: blur(calc(var(--glass-blur) - 2px)) saturate(var(--glass-sat));
 }
@@ -92,14 +96,19 @@
 
 .month-top-row{
   display: grid;
-  grid-template-columns: 1.35fr .9fr;
+  grid-template-columns: 1.4fr .95fr;
   gap: 14px;
   align-items: stretch;
 }
 
-.month-incentive{display:flex;flex-direction:column;justify-content:space-between}
+.month-incentive{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 124px;
+}
 
-/* Remove as “setas” de navegação (botões ← →) ao lado do seletor de mês */
+/* Remove as "setas" de navegação (botões ← →) ao lado do seletor de mês */
 #prevMonthBtn, #nextMonthBtn{ display: none; }
 
 /* Remove o ícone padrão do select (deixa mais clean) */
@@ -117,15 +126,125 @@
 .charts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
 .chart-box{border:1px solid var(--glass-border);border-radius:var(--radius-md);padding:12px;background:rgba(0,0,0,.10)}
 
-.tx-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;align-items:end}
+.tx-grid{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  align-items: end;
+}
 
-.table-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.table-actions{
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+}
+
+.table-actions input[type="search"],
+.table-actions input[type="text"]{
+  flex: 1 1 320px;
+  min-width: 220px;
+}
+
+.table-actions select{
+  flex: 0 0 220px;
+  min-width: 180px;
+}
 
 /* Login / Auth */
 .auth-page{min-height:100%;display:grid;place-items:center;padding:18px}
 .auth-card{width:min(560px,100%);background:var(--glass-card-bg);border:1px solid var(--glass-border);border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:18px;backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-sat));-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-sat))}
 .auth-header img{width:100%;border-radius:var(--radius-md);border:1px solid var(--glass-border);margin-top:10px}
 
+/* HOME: grid principal (12 colunas) */
+.home-grid{
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 14px;
+  align-items: start;
+  grid-auto-flow: dense;
+}
+
+/* Linha 1: 3 cards iguais */
+.home-top-row{
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  align-items: stretch;
+}
+
+.home-top-row > .home-eq{
+  height: 100%;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+}
+
+.home-top-row > .home-eq .row,
+.home-top-row > .home-eq .row-between{
+  margin-top: auto; /* empurra ações pra baixo se existir */
+}
+
+/* Spans das linhas 2 e 3 */
+.home-span-4{ grid-column: span 4; }
+.home-span-8{ grid-column: span 8; }
+
+/* HOME — row de 3 colunas com mesma altura */
+.home-3col-row{
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  align-items: stretch; /* mesma altura das 3 colunas */
+}
+
+/* Cada coluna ocupa 100% da altura da linha */
+.home-col{
+  height: 100%;
+  display: flex;
+}
+
+/* O panel dentro da coluna preenche a altura toda */
+.home-col > .panel{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Coluna 1: dois panels empilhados, dividindo a altura */
+.home-col-stack{
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 14px;
+}
+
+/* Cada panel da coluna 1 preenche sua "meia altura" */
+.home-col-stack > .panel{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Gráficos + Novo lançamento com proporção correta */
+.month-summary .grid-2{
+  grid-template-columns: 1.65fr .9fr;
+  align-items: stretch;
+}
+
+.month-summary .grid-2 > .panel{
+  height: 100%;
+  padding: 18px;
+}
+
+/* Card "Novo lançamento": mais confortável */
+.month-summary .grid-2 > .panel:last-child{
+  padding: 18px;
+}
+
+/* Desktop */
 @media (max-width: 860px){
   .shell{padding:14px}
   .topbar{padding:12px 14px}
@@ -136,75 +255,48 @@
   .month-top-row{grid-template-columns:1fr}
 }
 
-.home-grid{
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 14px;
-  align-items: start;
-  grid-auto-flow: dense;
-}
-
-.home-grid > .panel{ grid-column: span 4; }
-.home-grid > .panel.span-2{ grid-column: span 8; }
-
-/* telas médias */
+/* Tablet */
 @media (max-width: 980px){
-  .home-grid{ grid-template-columns: repeat(8, 1fr); }
-  .home-grid > .panel{ grid-column: span 4; }
-  .home-grid > .panel.span-2{ grid-column: span 8; }
-}
-
-/* mobile */
-@media (max-width: 700px){
-  .home-grid{ grid-template-columns: 1fr; }
-  .home-grid > .panel,
-  .home-grid > .panel.span-2{ grid-column: auto; }
-}
-
-.month-top-row{
-  display: grid;
-  grid-template-columns: 1.4fr .95fr;
-  gap: 14px;
-  align-items: stretch;
-}
-
-.month-incentive{
-  min-height: 124px;
-}
-
-/* Gráficos + Novo lançamento com proporção melhor */
-.month-summary .grid-2{
-  grid-template-columns: 1.2fr .8fr;
-  align-items: stretch;
-}
-.month-summary .grid-2 > .panel{
-  height: 100%;
-}
-
-/* Home: 3 cards iguais na mesma linha */
-.home-top-row{
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-  align-items: stretch; /* força mesma altura */
-}
-
-/* garante que os 3 tenham o mesmo “corpo” */
-.home-top-row > .home-eq{
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-/* deixa o conteúdo interno mais estável (título + texto + controles) */
-.home-top-row > .home-eq .row,
-.home-top-row > .home-eq .row-between{
-  margin-top: auto; /* empurra ações pra baixo se existir */
-}
-
-/* Responsivo */
-@media (max-width: 980px){
-  .home-top-row{
+  .home-top-row{ grid-template-columns: 1fr; }
+  .home-span-4, .home-span-8{ grid-column: 1 / -1; }
+  .home-3col-row{
     grid-template-columns: 1fr;
   }
+  .home-col{
+    height: auto;
+    display: block;
+  }
+  .home-col > .panel{ height: auto; }
+  .home-col-stack{
+    grid-template-rows: auto;
+  }
 }
+
+/* Mobile */
+@media (max-width: 700px){
+  .home-grid{ grid-template-columns: 1fr; }
+  .home-top-row,
+  .home-3col-row{
+    grid-template-columns: 1fr;
+  }
+  .home-col,
+  .home-col-stack{
+    height: auto;
+    display: block;
+    grid-template-rows: auto;
+  }
+  .home-col > .panel,
+  .home-col-stack > .panel{
+    height: auto;
+  }
+  .table-actions{
+    flex-wrap: wrap;
+    justify-content: stretch;
+  }
+  .table-actions input,
+  .table-actions select{
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+}
+
