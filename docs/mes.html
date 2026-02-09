@@ -18,6 +18,555 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===== Responsividade adicional ===== */
+
+    /* Desktop (padrão) */
+    @media (min-width: 1024px) {
+      .month-header {
+        flex-wrap: nowrap;
+        justify-content: space-between;
+      }
+
+      .month-nav {
+        flex-wrap: nowrap;
+      }
+
+      .grid-2 {
+        grid-template-columns: 1.65fr 0.9fr;
+      }
+
+      .charts {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .tx-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .tx-desc {
+        grid-column: 1 / -1;
+      }
+
+      .tx-form .btn.primary.w-full {
+        grid-column: 1 / -1;
+      }
+    }
+
+    /* Tablet (860px - 1023px) */
+    @media (max-width: 1023px) and (min-width: 861px) {
+      .shell {
+        padding: 14px;
+      }
+
+      .month-header {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .month-nav {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+      }
+
+      .month-nav .field {
+        flex: 1;
+        min-width: 140px;
+      }
+
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .charts {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .tx-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .tx-payment,
+      .tx-amount {
+        grid-column: auto;
+      }
+
+      .tx-desc {
+        grid-column: auto;
+      }
+
+      .kpi-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .month-incentive {
+        grid-column: 1 / -1;
+      }
+    }
+
+    /* Mobile grande (600px - 860px) */
+    @media (max-width: 860px) {
+      .shell {
+        padding: 12px;
+        max-width: 100%;
+      }
+
+      .topbar {
+        padding: 10px 12px;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .brand {
+        flex: 1;
+        min-width: 200px;
+      }
+
+      .top-actions {
+        flex: 1;
+        min-width: 200px;
+        justify-content: flex-end;
+      }
+
+      .month-header {
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .month-title h1 {
+        font-size: 22px;
+      }
+
+      .month-nav {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .month-nav .field {
+        flex: 1;
+        min-width: 110px;
+        margin-top: 0;
+      }
+
+      .month-nav .btn {
+        padding: 8px;
+        min-width: 38px;
+      }
+
+      .month-nav .chip {
+        flex: 1;
+        min-width: 100px;
+      }
+
+      .kpi-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .month-top-row {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .grid-2 {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .panel {
+        padding: 14px;
+      }
+
+      .charts {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .chart-box {
+        padding: 10px;
+      }
+
+      .tx-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .tx-form .btn.primary.w-full {
+        margin-top: 8px;
+        padding: 10px 12px;
+        font-size: 14px;
+      }
+
+      .tx-actions {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .tx-actions input,
+      .tx-actions select {
+        flex: 1 1 100%;
+        min-width: 0;
+      }
+
+      .table-lite {
+        font-size: 13px;
+      }
+
+      .table-lite th,
+      .table-lite td {
+        padding: 8px 10px;
+      }
+
+      .td-action .btn {
+        padding: 4px 8px;
+        font-size: 12px;
+      }
+
+      .kitty {
+        gap: 10px;
+      }
+
+      .kitty img {
+        width: 70px;
+        height: 70px;
+      }
+
+      .kitty-title {
+        font-size: 14px;
+      }
+    }
+
+    /* Mobile pequeno (até 599px) */
+    @media (max-width: 599px) {
+      .shell {
+        padding: 10px;
+        max-width: 100%;
+      }
+
+      .topbar {
+        padding: 10px;
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+      }
+
+      .brand {
+        width: 100%;
+      }
+
+      .brand strong {
+        display: block;
+        font-size: 16px;
+        margin-bottom: 4px;
+      }
+
+      .brand .chip {
+        width: 100%;
+        justify-content: center;
+        font-size: 11px;
+      }
+
+      .top-actions {
+        width: 100%;
+        justify-content: space-between;
+        gap: 6px;
+      }
+
+      .top-actions .btn {
+        flex: 1;
+        padding: 8px 10px;
+        font-size: 13px;
+      }
+
+      .month-header {
+        flex-direction: column;
+        gap: 10px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--glass-border);
+      }
+
+      .month-title h1 {
+        font-size: 18px;
+        margin: 0;
+      }
+
+      .month-title p {
+        font-size: 12px;
+        margin: 4px 0 0;
+      }
+
+      .month-nav {
+        width: 100%;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .month-nav .btn {
+        width: 100%;
+        padding: 8px;
+      }
+
+      .month-nav .field {
+        width: 100%;
+        margin-top: 0;
+      }
+
+      .month-nav .chip {
+        width: 100%;
+        text-align: center;
+      }
+
+      .kpi-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .kpi {
+        padding: 12px;
+      }
+
+      .kpi-value {
+        font-size: 18px;
+      }
+
+      .month-top-row {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .grid-2 {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .panel {
+        padding: 12px;
+        border-radius: 10px;
+      }
+
+      .panel h2 {
+        font-size: 16px;
+        margin-top: 0;
+      }
+
+      .charts {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        margin-top: 8px;
+      }
+
+      .chart-box {
+        padding: 8px;
+        border-radius: 8px;
+      }
+
+      .chart-box .muted {
+        font-size: 11px;
+      }
+
+      canvas {
+        max-height: 200px;
+      }
+
+      .tx-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .field {
+        gap: 4px;
+        margin-top: 8px;
+      }
+
+      .field > span {
+        font-size: 11px;
+      }
+
+      .input-lite,
+      .field input,
+      .field select,
+      .field textarea {
+        padding: 8px 10px;
+        border-radius: 8px;
+        font-size: 13px;
+      }
+
+      .tx-form .btn.primary.w-full {
+        margin-top: 6px;
+        padding: 10px;
+        font-size: 13px;
+      }
+
+      .tx-head {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+      }
+
+      .tx-head h2 {
+        font-size: 16px;
+        margin: 0;
+      }
+
+      .tx-actions {
+        width: 100%;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .tx-actions input,
+      .tx-actions select {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .table-lite {
+        font-size: 12px;
+        border-radius: 8px;
+      }
+
+      .table-lite table {
+        font-size: 12px;
+      }
+
+      .table-lite th,
+      .table-lite td {
+        padding: 6px 8px;
+        font-size: 12px;
+      }
+
+      .table-lite thead th {
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .td-action {
+        text-align: center;
+      }
+
+      .td-action .btn {
+        padding: 4px 6px;
+        font-size: 11px;
+      }
+
+      .kitty {
+        grid-template-columns: 60px 1fr;
+        gap: 8px;
+        margin-top: 8px;
+      }
+
+      .kitty img {
+        width: 60px;
+        height: 60px;
+      }
+
+      .kitty-title {
+        font-size: 13px;
+      }
+
+      .kitty .muted {
+        font-size: 11px;
+      }
+
+      .bottom-nav {
+        padding: 8px;
+        gap: 4px;
+      }
+
+      .bn-item {
+        padding: 8px 6px;
+        gap: 4px;
+        font-size: 10px;
+      }
+
+      .bn-ico svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .bn-balance {
+        display: none;
+      }
+
+      .bn-item small {
+        font-size: 10px;
+      }
+
+      .bn-active-pill {
+        display: none;
+      }
+    }
+
+    /* Ultra mobile (até 400px) */
+    @media (max-width: 399px) {
+      .shell {
+        padding: 8px;
+      }
+
+      .topbar {
+        padding: 8px;
+        gap: 6px;
+      }
+
+      .brand strong {
+        font-size: 14px;
+      }
+
+      .brand .chip {
+        font-size: 10px;
+      }
+
+      .top-actions .btn {
+        padding: 6px 8px;
+        font-size: 12px;
+      }
+
+      .month-title h1 {
+        font-size: 16px;
+      }
+
+      .month-title p {
+        font-size: 11px;
+      }
+
+      .kpi-value {
+        font-size: 16px;
+      }
+
+      .panel h2 {
+        font-size: 14px;
+      }
+
+      .field > span {
+        font-size: 10px;
+      }
+
+      .input-lite,
+      .field input,
+      .field select,
+      .field textarea {
+        padding: 6px 8px;
+        font-size: 12px;
+      }
+
+      .tx-head h2 {
+        font-size: 14px;
+      }
+
+      .table-lite th,
+      .table-lite td {
+        padding: 4px 6px;
+        font-size: 11px;
+      }
+
+      canvas {
+        max-height: 150px;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -153,48 +702,47 @@
                 </label>
 
                 <label class="field tx-payment">
-  <span>Método de pagamento</span>
-  <select id="txPayment"></select>
-</label>
+                  <span>Método de pagamento</span>
+                  <select id="txPayment"></select>
+                </label>
 
-<label class="field tx-amount">
-  <span>Valor</span>
-  <input id="txAmount" type="number" step="0.01" min="0.01" placeholder="0,00" required />
-</label>
-
+                <label class="field tx-amount">
+                  <span>Valor</span>
+                  <input id="txAmount" type="number" step="0.01" min="0.01" placeholder="0,00" required />
+                </label>
 
                 <label class="field tx-desc">
-  <span>Descrição</span>
-  <textarea id="txDesc" placeholder="Descrição opcional"></textarea>
-</label>
+                  <span>Descrição</span>
+                  <textarea id="txDesc" placeholder="Descrição opcional"></textarea>
+                </label>
 
-              <button class="btn primary w-full" type="submit">Adicionar lançamento</button>
+                <button class="btn primary w-full" type="submit">Adicionar lançamento</button>
+              </div>
             </form>
           </div>
         </div>
       </div>
 
-<!-- Lançamentos -->
-<div class="mt">
-  <div class="panel tx-card">
-    <div class="tx-head">
-      <h2>Lançamentos</h2>
+      <!-- Lançamentos -->
+      <div class="mt">
+        <div class="panel tx-card">
+          <div class="tx-head">
+            <h2>Lançamentos</h2>
 
-      <div class="tx-actions">
-        <input id="txSearch" class="input-lite" type="search" placeholder="Buscar..." />
-        <select id="txFilter" class="input-lite">
-          <option value="">Todos</option>
-          <option value="entrada">Entradas</option>
-          <option value="saida">Saídas</option>
-        </select>
+            <div class="tx-actions">
+              <input id="txSearch" class="input-lite" type="search" placeholder="Buscar..." />
+              <select id="txFilter" class="input-lite">
+                <option value="">Todos</option>
+                <option value="entrada">Entradas</option>
+                <option value="saida">Saídas</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Um único container (SEM id duplicado) -->
+          <div id="txTable" class="table-lite"></div>
+        </div>
       </div>
-    </div>
-
-    <!-- Um único container (SEM id duplicado) -->
-    <div id="txTable" class="table-lite"></div>
-  </div>
-</div>
-
 
     </section>
   </main>
@@ -230,7 +778,8 @@
   <a href="ir.html" class="bn-item" aria-label="Resumo de IR">
     <span class="bn-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 2h12v20l-2-1-2 1-2-1-2 1-2-1-2 1zm3 5h6v2H9zm0 4h6v2H9zm0 4h6v2H9z"/></svg></span>
     <small>IR</small>
-  </a>  
+  </a>
+
   <div class="bn-balance" aria-label="Saldo do mês">
     <div class="bn-balance-label">Saldo</div>
     <div class="bn-balance-value" id="footerBalance">—</div>
