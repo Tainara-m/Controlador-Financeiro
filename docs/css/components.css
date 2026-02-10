@@ -464,3 +464,25 @@ select.input-lite{
     min-width: 720px; /* garante colunas legíveis, sem virar “tudo quebrado” */
   }
 }
+
+/* Recuperação de senha */
+.hidden{
+  display: none;
+}
+
+.btn-forgot{
+  margin-top: 10px;
+  font-size: 13px;
+  opacity: .85;
+}
+
+.btn-forgot:hover{
+  opacity: 1;
+}
+
+/* Alerta de sucesso */
+.alert.success{
+  border-color: rgba(var(--ok-rgb), .35);
+  background: rgba(var(--ok-rgb), .14);
+  color: var(--text);
+}

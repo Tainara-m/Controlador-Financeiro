@@ -28,6 +28,7 @@
       <p class="muted">Acesse seus dados ou crie uma conta.</p>
     </header>
 
+    <!-- ====== FORM LOGIN/CADASTRO ====== -->
     <form id="authForm" class="form">
       <label class="field">
         <span>Email</span>
@@ -36,12 +37,12 @@
 
       <label class="field">
         <span>Senha</span>
-        <input id="password" type="password" autocomplete="current-password" required placeholder="••••••••" minlength="8" />
+        <input id="password" type="password" autocomplete="current-password" required placeholder="********" minlength="8" />
       </label>
 
       <label class="field" id="confirmWrap" style="display:none;">
         <span>Confirmar senha</span>
-        <input id="confirm" type="password" autocomplete="new-password" placeholder="••••••••" minlength="8" />
+        <input id="confirm" type="password" autocomplete="new-password" placeholder="********" minlength="8" />
       </label>
 
       <button class="btn primary" id="submitBtn" type="submit">Entrar</button>
@@ -50,16 +51,71 @@
         Dica: senha precisa ter pelo menos 8 caracteres.
       </p>
 
-      <div class="segmented">
+      <button class="btn ghost btn-forgot" type="button" id="forgotPasswordBtn">
+        Esqueci minha senha
+      </button>
+
+      <div class="segmented" id="segmentedWrap">
         <button class="seg-btn" data-mode="signup" type="button">Cadastrar</button>
       </div>
 
       <div class="alert" id="alert" style="display:none;"></div>
     </form>
+
+    <!-- ====== RECUPERAÇÃO: ENVIAR LINK ====== -->
+    <section class="mt hidden" id="resetCard">
+      <h2>Recuperar senha</h2>
+      <p class="muted">
+        Informe seu e-mail. Você receberá um link para redefinir sua senha.
+      </p>
+
+      <label class="field">
+        <span>E-mail</span>
+        <input type="email" id="resetEmail" placeholder="seu@email.com" />
+      </label>
+
+      <button class="btn primary w-full" id="sendResetBtn" type="button">
+        Enviar link de recuperação
+      </button>
+
+      <div class="alert mt" id="resetAlert" style="display:none;"></div>
+
+      <button class="btn ghost w-full mt" id="backToLoginBtn" type="button">
+        Voltar para login
+      </button>
+    </section>
+
+    <!-- ====== RECUPERAÇÃO: NOVA SENHA (quando voltar do link) ====== -->
+    <section class="mt hidden" id="newPasswordCard">
+      <h2>Nova senha</h2>
+      <p class="muted">
+        Defina sua nova senha para recuperar o acesso.
+      </p>
+
+      <label class="field">
+        <span>Nova senha</span>
+        <input id="newPassword" type="password" placeholder="mín. 8 caracteres" minlength="8" />
+      </label>
+
+      <label class="field">
+        <span>Confirmar nova senha</span>
+        <input id="newPasswordConfirm" type="password" placeholder="repita a senha" minlength="8" />
+      </label>
+
+      <button class="btn primary w-full" id="setNewPasswordBtn" type="button">
+        Atualizar senha
+      </button>
+
+      <button class="btn ghost w-full mt" id="backToLoginBtn2" type="button">
+        Voltar para login
+      </button>
+
+      <div class="alert mt" id="resetAlert" style="display:none;"></div>
+    </section>
   </main>
 
   <script type="module">
-    import { redirectIfAuthed, signIn, signUp } from "./js/auth.js";
+    import { redirectIfAuthed, signIn, signUp, sendPasswordReset, updatePassword } from "./js/auth.js";
 
     const $ = (s) => document.querySelector(s);
 
@@ -67,29 +123,96 @@
     const confirmWrap = $("#confirmWrap");
     const submitBtn = $("#submitBtn");
     const alertBox = $("#alert");
+    const segmentedWrap = $("#segmentedWrap");
+    const helperText = $("#helperText");
+
+    const authForm = $("#authForm");
+    const resetCard = $("#resetCard");
+    const newPasswordCard = $("#newPasswordCard");
+
+    const forgotBtn = $("#forgotPasswordBtn");
+    const backToLoginBtn = $("#backToLoginBtn");
+    const sendResetBtn = $("#sendResetBtn");
+
+    const backToLoginBtn2 = $("#backToLoginBtn2");
+    const setNewPasswordBtn = $("#setNewPasswordBtn");
+    const resetAlert = $("#resetAlert");
 
     let mode = "login";
-
-    function setMode(next) {
-      mode = next;
-      modeBtns.forEach(b => b.classList.toggle("is-active", b.dataset.mode === next));
-      confirmWrap.style.display = (next === "signup") ? "block" : "none";
-      submitBtn.textContent = (next === "signup") ? "Cadastrar" : "Entrar";
-      alertBox.style.display = "none";
-    }
 
     function showAlert(msg) {
       alertBox.textContent = msg;
       alertBox.style.display = "block";
     }
 
+    function hideAlert() {
+      alertBox.style.display = "none";
+    }
+
+    function showResetAlert(msg) {
+      resetAlert.textContent = msg;
+      resetAlert.style.display = "block";
+    }
+
+    function hideResetAlert() {
+      resetAlert.style.display = "none";
+    }
+
+    function showLoginUI() {
+      resetCard.classList.add("hidden");
+      newPasswordCard.classList.add("hidden");
+      authForm.style.display = "block";
+      segmentedWrap.style.display = "flex";
+      helperText.style.display = "block";
+      hideAlert();
+      hideResetAlert();
+    }
+
+    function showResetUI() {
+      authForm.style.display = "none";
+      segmentedWrap.style.display = "none";
+      helperText.style.display = "none";
+      newPasswordCard.classList.add("hidden");
+      resetCard.classList.remove("hidden");
+      hideAlert();
+      hideResetAlert();
+    }
+
+    function showNewPasswordUI() {
+      authForm.style.display = "none";
+      segmentedWrap.style.display = "none";
+      helperText.style.display = "none";
+      resetCard.classList.add("hidden");
+      newPasswordCard.classList.remove("hidden");
+      hideAlert();
+      hideResetAlert();
+    }
+
+    function setMode(next) {
+      mode = next;
+      modeBtns.forEach(b => b.classList.toggle("is-active", b.dataset.mode === next));
+      confirmWrap.style.display = (next === "signup") ? "block" : "none";
+      submitBtn.textContent = (next === "signup") ? "Cadastrar" : "Entrar";
+      hideAlert();
+    }
+
     modeBtns.forEach(btn => btn.addEventListener("click", () => setMode(btn.dataset.mode)));
 
-    await redirectIfAuthed();
+    // Se veio do link de recuperação do Supabase, a URL geralmente tem #type=recovery
+    const isRecovery = (window.location.hash || "").includes("type=recovery");
 
-    $("#authForm").addEventListener("submit", async (e) => {
+    if (isRecovery) {
+      // Não redireciona pra home; aqui o usuário precisa redefinir a senha
+      showNewPasswordUI();
+    } else {
+      await redirectIfAuthed();
+      showLoginUI();
+    }
+
+    // LOGIN/CADASTRO
+    authForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      alertBox.style.display = "none";
+      hideAlert();
 
       const email = $("#email").value.trim();
       const password = $("#password").value;
@@ -114,6 +237,83 @@
         showAlert(err?.message || "Erro ao autenticar.");
       } finally {
         submitBtn.disabled = false;
+      }
+    });
+
+    // Esqueci senha -> abre card de recuperação
+    forgotBtn?.addEventListener("click", () => {
+      $("#resetEmail").value = $("#email").value || "";
+      showResetUI();
+    });
+
+    // Voltar para login (recuperação)
+    backToLoginBtn?.addEventListener("click", () => {
+      showLoginUI();
+    });
+
+    // Enviar link de recuperação
+sendResetBtn?.addEventListener("click", async () => {
+  try {
+    sendResetBtn.disabled = true;
+    hideResetAlert();
+
+    const email = $("#resetEmail").value.trim();
+    await sendPasswordReset(email);
+
+    resetAlert.className = "alert success mt";
+    resetAlert.textContent =
+      "E-mail de recuperação enviado com sucesso. Verifique sua caixa de entrada e o spam.";
+    resetAlert.style.display = "block";
+
+  } catch (err) {
+    resetAlert.className = "alert mt";
+    resetAlert.textContent =
+      err?.message || "Erro ao enviar o e-mail de recuperação.";
+    resetAlert.style.display = "block";
+  } finally {
+    sendResetBtn.disabled = false;
+  }
+});
+
+
+    // Voltar para login (nova senha)
+    backToLoginBtn2?.addEventListener("click", () => {
+      // limpa hash pra não ficar preso no modo recovery
+      history.replaceState(null, "", "login.html");
+      showLoginUI();
+    });
+
+    // Atualizar senha após abrir link
+    setNewPasswordBtn?.addEventListener("click", async () => {
+      try {
+        setNewPasswordBtn.disabled = true;
+        hideResetAlert();
+
+        const pwd = $("#newPassword").value;
+        const pwd2 = $("#newPasswordConfirm").value;
+
+        if (!pwd || pwd.length < 8) {
+          showResetAlert("A senha deve ter pelo menos 8 caracteres.");
+          return;
+        }
+        if (pwd !== pwd2) {
+          showResetAlert("As senhas não coincidem.");
+          return;
+        }
+
+        await updatePassword(pwd);
+
+        showResetAlert("Senha atualizada! Você já pode fazer login.");
+        // remove o hash de recovery e volta pro login
+        setTimeout(() => {
+          history.replaceState(null, "", "login.html");
+          showLoginUI();
+        }, 800);
+
+      } catch (err) {
+        showResetAlert(err?.message || "Erro ao atualizar senha.");
+      } finally {
+        setNewPasswordBtn.disabled = false;
       }
     });
   </script>
