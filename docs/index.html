@@ -86,6 +86,39 @@
 
   <div class="home-3col-row">
 
+      <!-- Coluna 3: Metas -->
+  <div class="home-col">
+    <div class="panel">
+      <h2>Metas</h2>
+      <p class="muted m1">Crie suas metas e (se quiser) envie uma imagem para cada uma.</p>
+
+      <form id="goalForm" class="goal-form">
+        <label class="field">
+          <span>Nome da meta</span>
+          <input id="goalName" type="text" placeholder="Ex.: Reserva de emergência" required />
+        </label>
+
+        <label class="field">
+          <span>Imagem (opcional)</span>
+          <input id="goalImage" type="file" accept="image/*" />
+        </label>
+
+        <button class="btn primary" id="goalSubmit" type="submit">Adicionar meta</button>
+      </form>
+
+      <div id="goalsList" class="goals-list"></div>
+    </div>
+  </div>
+
+  <!-- Coluna 2: Categorias -->
+  <div class="home-col">
+    <div class="panel">
+      <h2>Categorias de gastos</h2>
+      <p class="muted m1">Marque as categorias que você quer usar no sistema.</p>
+      <div id="categories" class="checkgrid"></div>
+    </div>
+  </div>
+
   <!-- Coluna 1 (stack): Métodos + Mês -->
   <div class="home-col home-col-stack">
     <div class="panel">
@@ -119,45 +152,8 @@
     </div>
   </div>
 
-  <!-- Coluna 2: Categorias -->
-  <div class="home-col">
-    <div class="panel">
-      <h2>Categorias de gastos</h2>
-      <p class="muted m1">Marque as categorias que você quer usar no sistema.</p>
-      <div id="categories" class="checkgrid"></div>
-    </div>
-  </div>
-
-  <!-- Coluna 3: Metas -->
-  <div class="home-col">
-    <div class="panel">
-      <h2>Metas</h2>
-      <p class="muted m1">Crie suas metas e (se quiser) envie uma imagem para cada uma.</p>
-
-      <form id="goalForm" class="goal-form">
-        <label class="field">
-          <span>Nome da meta</span>
-          <input id="goalName" type="text" placeholder="Ex.: Reserva de emergência" required />
-        </label>
-
-        <label class="field">
-          <span>Imagem (opcional)</span>
-          <input id="goalImage" type="file" accept="image/*" />
-        </label>
-
-        <button class="btn primary" id="goalSubmit" type="submit">Adicionar meta</button>
-      </form>
-
-      <div id="goalsList" class="goals-list"></div>
-    </div>
-  </div>
-
 </div>
-
-
 </div>
-
-
         
         <div class="mt row">
           <a class="btn ghost" href="anual.html">Ir para Comparativo anual</a>
