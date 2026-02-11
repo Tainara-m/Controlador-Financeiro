@@ -110,8 +110,7 @@
         Voltar para login
       </button>
 
-      <div class="alert mt" id="resetAlert" style="display:none;"></div>
-    </section>
+<div class="alert mt" id="newPasswordAlert" style="display:none;"></div></section>
   </main>
 
   <script type="module">
@@ -136,7 +135,9 @@
 
     const backToLoginBtn2 = $("#backToLoginBtn2");
     const setNewPasswordBtn = $("#setNewPasswordBtn");
-    const resetAlert = $("#resetAlert");
+    const resetAlert = $("#resetAlert");             // alert do envio de link
+    const newPasswordAlert = $("#newPasswordAlert"); // alert da redefinição
+
 
     let mode = "login";
 
@@ -149,14 +150,26 @@
       alertBox.style.display = "none";
     }
 
-    function showResetAlert(msg) {
-      resetAlert.textContent = msg;
-      resetAlert.style.display = "block";
-    }
+    function showResetAlert(msg, type = "error") {
+  resetAlert.className = (type === "success") ? "alert success mt" : "alert mt";
+  resetAlert.textContent = msg;
+  resetAlert.style.display = "block";
+}
 
-    function hideResetAlert() {
-      resetAlert.style.display = "none";
-    }
+function hideResetAlert() {
+  resetAlert.style.display = "none";
+}
+
+function showNewPasswordAlert(msg, type = "error") {
+  newPasswordAlert.className = (type === "success") ? "alert success mt" : "alert mt";
+  newPasswordAlert.textContent = msg;
+  newPasswordAlert.style.display = "block";
+}
+
+function hideNewPasswordAlert() {
+  newPasswordAlert.style.display = "none";
+}
+
 
     function showLoginUI() {
       resetCard.classList.add("hidden");
@@ -166,6 +179,8 @@
       helperText.style.display = "block";
       hideAlert();
       hideResetAlert();
+      hideNewPasswordAlert();
+
     }
 
     function showResetUI() {
@@ -186,6 +201,7 @@
       newPasswordCard.classList.remove("hidden");
       hideAlert();
       hideResetAlert();
+      hideNewPasswordAlert();
     }
 
     function setMode(next) {
@@ -260,21 +276,17 @@ sendResetBtn?.addEventListener("click", async () => {
     const email = $("#resetEmail").value.trim();
     await sendPasswordReset(email);
 
-    resetAlert.className = "alert success mt";
-    resetAlert.textContent =
-      "E-mail de recuperação enviado com sucesso. Verifique sua caixa de entrada e o spam.";
-    resetAlert.style.display = "block";
+    showResetAlert(
+      "E-mail de recuperação enviado com sucesso. Verifique sua caixa de entrada e o spam.",
+      "success"
+    );
 
   } catch (err) {
-    resetAlert.className = "alert mt";
-    resetAlert.textContent =
-      err?.message || "Erro ao enviar o e-mail de recuperação.";
-    resetAlert.style.display = "block";
+    showResetAlert(err?.message || "Erro ao enviar o e-mail de recuperação.");
   } finally {
     sendResetBtn.disabled = false;
   }
 });
-
 
     // Voltar para login (nova senha)
     backToLoginBtn2?.addEventListener("click", () => {
@@ -284,38 +296,38 @@ sendResetBtn?.addEventListener("click", async () => {
     });
 
     // Atualizar senha após abrir link
-    setNewPasswordBtn?.addEventListener("click", async () => {
-      try {
-        setNewPasswordBtn.disabled = true;
-        hideResetAlert();
+   setNewPasswordBtn?.addEventListener("click", async () => {
+  try {
+    setNewPasswordBtn.disabled = true;
+    hideNewPasswordAlert();
 
-        const pwd = $("#newPassword").value;
-        const pwd2 = $("#newPasswordConfirm").value;
+    const pwd = $("#newPassword").value;
+    const pwd2 = $("#newPasswordConfirm").value;
 
-        if (!pwd || pwd.length < 8) {
-          showResetAlert("A senha deve ter pelo menos 8 caracteres.");
-          return;
-        }
-        if (pwd !== pwd2) {
-          showResetAlert("As senhas não coincidem.");
-          return;
-        }
+    if (!pwd || pwd.length < 8) {
+      showNewPasswordAlert("A senha deve ter pelo menos 8 caracteres.");
+      return;
+    }
+    if (pwd !== pwd2) {
+      showNewPasswordAlert("As senhas não coincidem.");
+      return;
+    }
 
-        await updatePassword(pwd);
+    await updatePassword(pwd);
 
-        showResetAlert("Senha atualizada! Você já pode fazer login.");
-        // remove o hash de recovery e volta pro login
-        setTimeout(() => {
-          history.replaceState(null, "", "login.html");
-          showLoginUI();
-        }, 800);
+    showNewPasswordAlert("Senha atualizada! Você já pode fazer login.", "success");
 
-      } catch (err) {
-        showResetAlert(err?.message || "Erro ao atualizar senha.");
-      } finally {
-        setNewPasswordBtn.disabled = false;
-      }
-    });
-  </script>
+    setTimeout(() => {
+      history.replaceState(null, "", "login.html");
+      showLoginUI();
+    }, 800);
+
+  } catch (err) {
+    showNewPasswordAlert(err?.message || "Erro ao atualizar senha.");
+  } finally {
+    setNewPasswordBtn.disabled = false;
+  }
+});
+ </script>
 </body>
 </html>
